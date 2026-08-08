@@ -14,9 +14,9 @@
   --color-danger: #ef4444;
 
   --color-bg: #ffffff;
-  --color-bg-secondary: #f0f9ff;
-  --color-bg-tertiary: #e0f2fe;
-  --color-border: #d8e6f0;
+  --color-bg-secondary: #f6f9fc;
+  --color-bg-tertiary: #eef3f8;
+  --color-border: #e2e8f0;
   --color-text: #0f172a;
   --color-text-light: #5b7088;
   --color-text-inverse: #ffffff;
@@ -43,22 +43,7 @@
   --maxw: 1140px;
 }
 
-/* ---------- Dark mode ---------- */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #0b1020;
-    --color-bg-secondary: #121a30;
-    --color-bg-tertiary: #1b2540;
-    --color-border: #273350;
-    --color-text: #e8edf7;
-    --color-text-light: #9aa7c2;
-    --color-text-inverse: #ffffff;
-    --gradient-soft: linear-gradient(135deg, #0c1a2e 0%, #0b1f2b 50%, #0a2a26 100%);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 10px 25px -8px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 24px 48px -12px rgba(14, 165, 233, 0.4);
-  }
-}
+/* Light mode is the only mode — no dark-mode override. */
 
 /* ---------- Reset / base ---------- */
 *,
@@ -288,9 +273,6 @@ section { position: relative; }
   background: var(--gradient-brand);
   box-shadow: 0 12px 30px -10px rgba(99, 102, 241, 0.7);
   border: 3px solid #fff;
-}
-@media (prefers-color-scheme: dark) {
-  .hero__avatar { border-color: var(--color-bg); }
 }
 
 .hero__title {
@@ -589,11 +571,6 @@ section { position: relative; }
 .project-card__category--ios { background: #e0f2fe; color: #0369a1; }
 .project-card__category--data_science { background: #dcfce7; color: #15803d; }
 .project-card__category--software_dev { background: #ede9fe; color: #6d28d9; }
-@media (prefers-color-scheme: dark) {
-  .project-card__category--ios { background: #0c4a6e; color: #bae6fd; }
-  .project-card__category--data_science { background: #14532d; color: #bbf7d0; }
-  .project-card__category--software_dev { background: #4c1d95; color: #ddd6fe; }
-}
 .project-card__title { font-size: 1.3rem; margin-bottom: 0.55rem; }
 .project-card__description {
   font-size: 0.9rem;
