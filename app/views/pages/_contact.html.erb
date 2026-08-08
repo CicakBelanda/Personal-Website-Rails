@@ -1,0 +1,37 @@
+<section id="contact" class="section contact reveal">
+  <div class="container">
+    <div class="contact__form-wrapper">
+      <div class="section__head" style="margin-bottom: 1.5rem;">
+        <span class="eyebrow">Say hello</span>
+        <h2 class="section__title">Get in Touch</h2>
+      </div>
+      <p class="contact__intro">
+        Have a project in mind or just want to chat? Drop me a message.
+      </p>
+
+      <%= form_with url: contact_path, local: true, class: "contact__form", id: "contact-form" do |f| %>
+        <div class="field">
+          <%= f.label :name, "Name" %>
+          <%= f.text_field :name, placeholder: "Your name", required: true %>
+        </div>
+
+        <div class="field">
+          <%= f.label :email, "Email" %>
+          <%= f.email_field :email, placeholder: "you@example.com", required: true %>
+        </div>
+
+        <div class="field">
+          <%= f.label :subject, "Subject" %>
+          <%= f.text_field :subject, placeholder: "What would you like to discuss?", required: true %>
+        </div>
+
+        <div class="field">
+          <%= f.label :message, "Message" %>
+          <%= f.text_area :message, rows: 5, placeholder: "Your message here...", required: true %>
+        </div>
+
+        <%= f.submit "Send Message", class: "btn btn-primary", data: { disable_with: "Sending..." } %>
+      <% end %>
+    </div>
+  </div>
+</section>

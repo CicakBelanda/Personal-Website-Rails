@@ -1,0 +1,47 @@
+<section id="projects" class="section projects reveal">
+  <div class="container">
+    <div class="section__head">
+      <span class="eyebrow">Work</span>
+      <h2 class="section__title">Featured Projects</h2>
+      <p class="section__sub">A mix of mobile, data and web things I've built.</p>
+    </div>
+
+    <div class="projects__filter" data-controller="project-filter">
+      <button type="button" class="projects__filter-btn active" data-action="click->project-filter#filter" data-filter="all">All</button>
+      <button type="button" class="projects__filter-btn" data-action="click->project-filter#filter" data-filter="ios">iOS Apps</button>
+      <button type="button" class="projects__filter-btn" data-action="click->project-filter#filter" data-filter="data_science">Data Science</button>
+      <button type="button" class="projects__filter-btn" data-action="click->project-filter#filter" data-filter="software_dev">Software Dev</button>
+    </div>
+
+    <div class="projects__grid">
+      <% @projects.each do |project| %>
+        <article class="project-card" data-project-category="<%= project.category %>">
+          <div class="project-card__image">
+            <%= project.title.split(' ').map(&:capitalize).join(' ') %>
+          </div>
+          <div class="project-card__content">
+            <span class="project-card__category project-card__category--<%= project.category %>"><%= Project.category_labels[project.category] %></span>
+            <h3 class="project-card__title"><%= project.title %></h3>
+            <p class="project-card__description"><%= project.description %></p>
+
+            <% tech_stack = project.tech_stack.is_a?(Array) ? project.tech_stack : JSON.parse(project.tech_stack || '[]') %>
+            <div class="project-card__tech">
+              <% tech_stack.each do |tech| %>
+                <span class="tech-badge"><%= tech %></span>
+              <% end %>
+            </div>
+
+            <div class="project-card__links">
+              <% if project.github_url.present? %>
+                <a href="<%= project.github_url %>" target="_blank" rel="noopener noreferrer" class="project-card__link btn btn-outline btn-sm">GitHub</a>
+              <% end %>
+              <% if project.demo_url.present? %>
+                <a href="<%= project.demo_url %>" target="_blank" rel="noopener noreferrer" class="project-card__link btn btn-outline btn-sm"><%= project.demo_url.include?('itunes.apple.com') ? 'App Store' : 'Live Demo' %></a>
+              <% end %>
+            </div>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  </div>
+</section>
