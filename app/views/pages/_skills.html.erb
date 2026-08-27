@@ -1,25 +1,85 @@
-<section id="skills" class="section skills reveal">
-  <div class="skills__panorama no-js" data-controller="skills-panorama">
-    <div class="skills__stage">
-      <div class="skills__head">
-        <span class="eyebrow">Toolkit</span>
-        <h2 class="section__title">Skills &amp; Technologies</h2>
-        <p class="skills__hint">Scroll to explore</p>
-      </div>
+<%
+# Build an interactive skills constellation, clustered by domain.
+# Positions are computed server-side so the SVG is correct without JS.
+domains = {
+  ios: { label: "iOS",   cx: 200, color: "#0a84ff" },
+  ds:  { label: "ML & Data", cx: 500, color: "#22c55e" },
+  web: { label: "Web",   cx: 800, color: "#06b6d4" }
+}
+cy = 230
+radius = 132
+by_domain = PagesController::SKILLS.group_by { |s| s[:domain] }
 
-      <div class="skills__rows" data-skills-panorama-target="rows">
-        <% @skill_rows.each_with_index do |row, i| %>
-          <div class="skills__row" data-skills-panorama-row data-dir="<%= i.odd? ? 1 : -1 %>">
-            <div class="skills__row-track">
-              <% row.each do |skill| %>
-                <span class="skill-chip">
-                  <span class="skill-chip__logo <%= skill[:logo] %>"><%= skill[:placeholder] if skill[:placeholder] %></span><%= skill[:name] %>
-                </span>
-              <% end %>
-            </div>
-          </div>
+# Pre-compute node coordinates per domain (radial cluster around hub).
+nodes = {}
+by_domain.each do |dom, skills|
+  hub = domains[dom]
+  skills.each_with_index do |s, i|
+    angle = (2 * Math::PI * i / skills.length) - Math::PI / 2
+    x = hub[:cx] + radius * Math.cos(angle)
+    y = cy + radius * Math.sin(angle) * 0.92
+    nodes[s[:name]] = { x: x.round(1), y: y.round(1), dom: dom, color: hub[:color] }
+  end
+end
+%>
+
+<section id="skills" class="section skills reveal">
+  <div class="container">
+    <div class="section__head">
+      <span class="eyebrow">Toolkit</span>
+      <h2 class="section__title">Skills &amp; Technologies</h2>
+      <p class="skills__hint">Hover a node to explore a discipline</p>
+    </div>
+  </div>
+
+  <!-- Interactive network (enhanced); falls back to the chip grid without JS / reduced motion -->
+  <div class="skills__network no-js" data-controller="skills-network">
+    <svg class="skills__svg" viewBox="0 0 1000 460" preserveAspectRatio="xMidYMid meet"
+         data-skills-network-target="svg" role="img"
+         aria-label="Skills network grouped by discipline"
+         data-action="pointerover->skills-network#activate pointerout->skills-network#reset">
+
+      <% domains.each do |dom, hub| %>
+        <!-- intra-cluster connective lines -->
+        <% by_domain[dom].combination(2).each do |a, b| %>
+          <% na, nb = nodes[a[:name]], nodes[b[:name]] %>
+          <line class="skills__link" data-domain="<%= dom %>"
+                x1="<%= na[:x] %>" y1="<%= na[:y] %>" x2="<%= nb[:x] %>" y2="<%= nb[:y] %>" />
         <% end %>
-      </div>
+        <!-- hub center -->
+        <circle class="skills__hub" data-domain="<%= dom %>" cx="<%= hub[:cx] %>" cy="<%= cy %>" r="7"
+                style="fill:<%= hub[:color] %>" />
+        <text class="skills__hub-label" data-domain="<%= dom %>" x="<%= hub[:cx] %>" y="<%= cy + 26 %>"><%= hub[:label] %></text>
+      <% end %>
+
+      <% PagesController::SKILLS.each do |s| %>
+        <% n = nodes[s[:name]] %>
+        <g class="skill-node" data-domain="<%= s[:domain] %>" data-name="<%= s[:name] %>"
+           transform="translate(<%= n[:x] %>, <%= n[:y] %>)">
+          <circle class="skill-node__hit" r="24" fill="transparent" />
+          <circle class="skill-node__dot" r="5" style="fill:<%= n[:color] %>" />
+          <text class="skill-node__label" y="4"><%= s[:name] %></text>
+        </g>
+      <% end %>
+    </svg>
+
+    <div class="skills__tooltip" data-skills-network-target="label" aria-hidden="true"></div>
+  </div>
+
+  <!-- Fallback: chip panorama (shown when no JS / reduced motion via CSS) -->
+  <div class="skills__panorama" data-controller="skills-panorama">
+    <div class="skills__rows" data-skills-panorama-target="rows">
+      <% @skill_rows.each_with_index do |row, i| %>
+        <div class="skills__row" data-skills-panorama-row data-dir="<%= i.odd? ? 1 : -1 %>">
+          <div class="skills__row-track">
+            <% row.each do |skill| %>
+              <span class="skill-chip">
+                <span class="skill-chip__logo <%= skill[:logo] %>"><%= skill[:placeholder] if skill[:placeholder] %></span><%= skill[:name] %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </section>

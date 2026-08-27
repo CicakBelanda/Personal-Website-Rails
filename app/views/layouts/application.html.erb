@@ -18,7 +18,9 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body data-controller="nav-active reveal">
+  <body data-controller="nav-active reveal cursor">
+    <div class="cursor-ring" data-cursor-target="ring" aria-hidden="true"></div>
+    <div class="cursor-dot" data-cursor-target="dot" aria-hidden="true"></div>
     <% flash.each do |type, message| %>
       <div id="flash" class="flash-<%= type %>">
         <%= message %>

@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["item"]
 
   connect() {
-    this.items = this.itemTargets.length ? this.itemTargets : this.element.querySelectorAll(".reveal")
+    this.items = this.itemTargets.length ? this.itemTargets : this.element.querySelectorAll(".reveal, .project-card")
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {

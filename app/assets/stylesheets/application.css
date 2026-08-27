@@ -4,6 +4,10 @@
  * Centralized semantic design tokens (PRD §8).
  */
 
+/* ---------- Base: smooth scroll + anchor offset for fixed nav (Phase 3) ---------- */
+html { scroll-behavior: smooth; }
+section[id] { scroll-margin-top: 90px; }
+
 /* ---------- Design tokens (dark-only, PRD §7.1 / §8) ---------- */
 :root {
   /* Semantic surface tokens */
@@ -474,27 +478,10 @@ section { position: relative; }
   color: var(--text-muted);
 }
 
-/* ---------- Skills (multi-row sliding panorama) ---------- */
+/* ---------- Skills: interactive network (primary) + chip panorama (fallback) ---------- */
 .skills { background: var(--surface); }
 
-.skills__panorama {
-  position: relative;
-  height: 300vh;
-}
-.skills__stage {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
-}
-.skills__head {
-  text-align: center;
-  padding: 0 1.25rem 1.25rem;
-  flex: 0 0 auto;
-}
+/* HINT */
 .skills__hint {
   margin-top: 0.5rem;
   font-size: 0.85rem;
@@ -513,8 +500,98 @@ section { position: relative; }
   50% { transform: translateX(3px); }
 }
 
+/* PRIMARY: SVG constellation network */
+.skills__network {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+.skills__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.skills__link {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+  opacity: 0.35;
+  transition: opacity 0.35s ease, stroke 0.35s ease;
+}
+.skills__hub { opacity: 0.9; }
+.skills__hub-label {
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-anchor: middle;
+  transition: fill 0.3s ease;
+}
+.skill-node { cursor: pointer; transition: opacity 0.3s ease; pointer-events: all; }
+.skill-node__hit { pointer-events: all; }
+.skill-node__dot {
+  transition: r 0.25s ease, filter 0.25s ease;
+  pointer-events: none;
+}
+.skill-node__label {
+  fill: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  text-anchor: middle;
+  transition: fill 0.3s ease;
+  pointer-events: none;
+}
+.skill-node:hover .skill-node__dot,
+.skill-node.is-active .skill-node__dot {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+/* hover a node -> highlight its domain cluster, dim the rest */
+.skills__network:has(.skill-node.is-active) .skill-node.is-dim,
+.skills__network:has(.skill-node.is-active) .skills__link.is-dim,
+.skills__network:has(.skill-node.is-active) .skills__hub-label.is-dim { opacity: 0.12; }
+.skills__network:has(.skill-node.is-active) .skill-node.is-active .skill-node__label,
+.skills__network:has(.skill-node.is-active) .skills__hub-label.is-active { fill: var(--text-primary); }
+.skills__link.is-active { opacity: 0.7; stroke: var(--accent); }
+
+.skills__tooltip {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 60;
+  padding: 0.4rem 0.8rem;
+  background: var(--surface-elevated);
+  border: 1px solid var(--label-accent, var(--accent));
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(16px, 16px);
+  transition: opacity 0.18s ease;
+  box-shadow: var(--shadow-md);
+  white-space: nowrap;
+}
+.skills__tooltip.is-visible { opacity: 1; }
+
+/* FALLBACK: chip panorama (shown only when no JS / reduced motion) */
+.skills__panorama { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .skills__network { display: none; }
+  .skills__panorama { display: block; }
+  .skills__hint::before { animation: none; }
+}
+/* No-JS: hide network, show panorama grid */
+.skills__network.no-js { display: none; }
+.skills__network.no-js ~ .skills__panorama { display: block; }
+
+.skills__panorama {
+  position: relative;
+  padding: 0 1.25rem 2rem;
+}
 .skills__rows {
-  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -566,31 +643,6 @@ section { position: relative; }
 .skill-chip__logo .devicon-plain,
 .skill-chip__logo .devicon-original { color: inherit; }
 
-/* Fallback: no JS / reduced motion -> static rows, no slide */
-.skills__panorama.is-static .skills__stage,
-.skills__panorama.no-js .skills__stage {
-  position: static; height: auto; display: block;
-}
-.skills__panorama.is-static .skills__rows,
-.skills__panorama.no-js .skills__rows { display: block; }
-.skills__panorama.is-static .skills__row,
-.skills__panorama.no-js .skills__row { overflow: visible; margin-bottom: 1rem; }
-.skills__panorama.is-static .skills__row-track,
-.skills__panorama.no-js .skills__row-track {
-  flex-wrap: wrap; width: auto; transform: none !important; justify-content: center;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .skills__panorama { height: auto; }
-  .skills__panorama .skills__stage { position: static; height: auto; display: block; }
-  .skills__panorama .skills__rows { display: block; }
-  .skills__panorama .skills__row { overflow: visible; margin-bottom: 1rem; }
-  .skills__panorama .skills__row-track {
-    flex-wrap: wrap; width: auto; transform: none !important; justify-content: center;
-  }
-  .skills__hint::before { animation: none; }
-}
-
 /* ---------- Projects ---------- */
 .projects__filter {
   display: flex;
@@ -623,6 +675,7 @@ section { position: relative; }
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.75rem;
 }
+/* Staggered scroll-reveal for individual cards (Phase 3 polish) */
 .project-card {
   display: flex;
   flex-direction: column;
@@ -631,7 +684,21 @@ section { position: relative; }
   border-radius: var(--radius-xl);
   overflow: hidden;
   transition: var(--transition-normal);
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  will-change: opacity, transform;
 }
+.project-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.project-card:nth-child(2) { transition-delay: 0.08s; }
+.project-card:nth-child(3) { transition-delay: 0.16s; }
+.project-card:nth-child(4) { transition-delay: 0.24s; }
+.project-card:nth-child(5) { transition-delay: 0.32s; }
 .project-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-lg);
@@ -1071,7 +1138,60 @@ section { position: relative; }
   .hero__cta .btn { width: 100%; }
 }
 
+/* ---------- Custom cursor (Phase 3, PRD §9) ---------- */
+/* Native cursor stays visible until JS confirms a fine pointer + no reduced motion. */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: transform;
+}
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--accent);
+}
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1.5px solid rgba(59, 130, 246, 0.6);
+  transition: opacity 0.3s ease, width 0.25s ease, height 0.25s ease,
+    background 0.25s ease, border-color 0.25s ease;
+}
+body.has-custom-cursor,
+body.has-custom-cursor a,
+body.has-custom-cursor button,
+body.has-custom-cursor input,
+body.has-custom-cursor textarea,
+body.has-custom-cursor select {
+  cursor: none;
+}
+body.has-custom-cursor .cursor-dot,
+body.has-custom-cursor .cursor-ring { opacity: 1; }
+.cursor-ring.is-hover {
+  width: 52px;
+  height: 52px;
+  margin: -26px 0 0 -26px;
+  background: rgba(59, 130, 246, 0.1);
+  border-color: var(--accent);
+}
+.cursor-ring.is-down {
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .reveal,
+  .project-card { opacity: 1; transform: none; transition: none; }
   html { scroll-behavior: auto; }
+  .cursor-dot, .cursor-ring { display: none; }
 }
