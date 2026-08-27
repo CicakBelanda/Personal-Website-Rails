@@ -64,7 +64,8 @@ module Admin
         @project.cover_image.attach(params[:project][:cover_image])
       end
       if params[:project][:gallery_images].present?
-        @project.gallery_images.attach(Array(params[:project][:gallery_images]).reject(&:blank?))
+        files = Array(params[:project][:gallery_images]).reject(&:blank?)
+        @project.gallery_images.attach(files) if files.any?
       end
     end
 
