@@ -1,0 +1,8 @@
+<h1 class="admin-title">Edit Project</h1>
+<%= form_with model: @project, url: admin_project_path(@project.id), method: :patch, local: true, class: "admin-form" do |form| %>
+  <%= render "admin/shared/form_fields", form: form, record: @project, columns: ["title", "category", "category_label", "role", "position", "featured", "tech_stack", "description", "problem", "solution", "tech_details", "project_date", "demo_url", "github_url", "cover_image"] %>
+  <div class="admin-form__actions">
+    <%= form.submit "Save", class: "admin-btn admin-btn--primary" %>
+    <%= link_to "Cancel", admin_projects_path, class: "admin-link" %>
+  </div>
+<% end %>

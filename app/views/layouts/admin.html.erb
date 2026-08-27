@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin · <%= content_for(:title) || "Portfolio CMS" %></title>
+  <meta name="robots" content="noindex, nofollow">
+  <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="admin-shell">
+  <aside class="admin-side">
+    <div class="admin-side__brand">KJ · Admin</div>
+    <nav class="admin-side__nav">
+      <%= link_to "Projects", admin_projects_path, class: "admin-side__link" %>
+      <%= link_to "Experiences", admin_experiences_path, class: "admin-side__link" %>
+      <%= link_to "Education", admin_educations_path, class: "admin-side__link" %>
+      <%= link_to "Publications", admin_publications_path, class: "admin-side__link" %>
+      <%= link_to "Leadership", admin_leadership_experiences_path, class: "admin-side__link" %>
+      <%= link_to "Certifications", admin_certifications_path, class: "admin-side__link" %>
+      <%= link_to "Awards", admin_awards_path, class: "admin-side__link" %>
+    </nav>
+    <div class="admin-side__foot">
+      <%= link_to "← View site", root_path, class: "admin-side__link admin-side__link--muted" %>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <% if notice %><div class="admin-flash"><%= notice %></div><% end %>
+    <%= yield %>
+  </main>
+</body>
+</html>

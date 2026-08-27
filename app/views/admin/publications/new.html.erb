@@ -1,0 +1,8 @@
+<h1 class="admin-title">New Publication</h1>
+<%= form_with model: @publication, url: admin_publications_path, local: true, class: "admin-form" do |form| %>
+  <%= render "admin/shared/form_fields", form: form, record: @publication, columns: ["title", "publisher", "publication_date", "description", "methods", "doi_url", "position"] %>
+  <div class="admin-form__actions">
+    <%= form.submit "Create", class: "admin-btn admin-btn--primary" %>
+    <%= link_to "Cancel", admin_publications_path, class: "admin-link" %>
+  </div>
+<% end %>

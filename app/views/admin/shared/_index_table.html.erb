@@ -1,0 +1,50 @@
+<%
+# Shared index table for admin resources.
+# locals: records (ActiveRecord::Relation), columns (Array<Symbol>),
+#         resource_name (String, e.g. "project"), new_path (String)
+cols = local_assigns[:columns] || records.klass.column_names.reject { |c| %w[id created_at updated_at].include?(c) }
+rname = local_assigns[:resource_name]
+sing = rname.singularize
+new_p  = local_assigns[:new_path]
+%>
+<div class="admin-index__head">
+  <h1 class="admin-title"><%= rname.titleize.pluralize %></h1>
+  <%= link_to "New #{sing.titleize}", new_p, class: "admin-btn admin-btn--primary" if new_p %>
+</div>
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <% cols.first(4).each do |c| %><th><%= c.to_s.titleize %></th><% end %>
+      <th class="admin-table__actions">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if records.any? %>
+      <% records.each do |rec| %>
+        <% show_url = respond_to?("admin_#{sing}_path") ? send("admin_#{sing}_path", rec.id) : nil %>
+        <% edit_url = send("edit_admin_#{sing}_path", rec.id) %>
+        <% del_url  = send("admin_#{sing}_path", rec.id) %>
+        <tr>
+          <% cols.first(4).each do |c| %>
+            <td>
+              <% val = rec.send(c) %>
+              <% if val.is_a?(Array) %>
+                <%= val.join(", ").truncate(60) %>
+              <% else %>
+                <%= val.to_s.truncate(60) %>
+              <% end %>
+            </td>
+          <% end %>
+          <td class="admin-table__actions">
+            <% if show_url %><%= link_to "Show", show_url, class: "admin-link" %><% end %>
+            <%= link_to "Edit", edit_url, class: "admin-link" %>
+            <%= button_to "Delete", del_url, method: :delete, form: { class: "admin-inline-form" }, class: "admin-link admin-link--danger", data: { turbo_confirm: "Delete this record?" } %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr><td colspan="5" class="admin-empty">No records yet.</td></tr>
+    <% end %>
+  </tbody>
+</table>

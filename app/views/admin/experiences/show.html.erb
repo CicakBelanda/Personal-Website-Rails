@@ -1,0 +1,11 @@
+<h1 class="admin-title"><%= @experience.send("title") %></h1>
+<dl class="admin-show">
+  <% @experience.attributes.except("id", "created_at", "updated_at").each do |k, v| %>
+    <dt><%= k.titleize %></dt>
+    <dd><%= v.is_a?(Array) ? v.join(", ") : v.to_s %></dd>
+  <% end %>
+</dl>
+<div class="admin-form__actions">
+  <%= link_to "Edit", edit_admin_experience_path(@experience.id), class: "admin-btn" %>
+  <%= link_to "Back", admin_experiences_path, class: "admin-link" %>
+</div>

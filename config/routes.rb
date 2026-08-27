@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    resources :awards
+    resources :certifications
+    resources :leadership_experiences
+    resources :publications
+    resources :educations
+    resources :experiences
+    resources :projects
+  end
   root "pages#home"
   
   post "/contact", to: "contacts#create"

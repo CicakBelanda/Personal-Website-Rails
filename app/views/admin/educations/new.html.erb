@@ -1,0 +1,8 @@
+<h1 class="admin-title">New Education</h1>
+<%= form_with model: @education, url: admin_educations_path, local: true, class: "admin-form" do |form| %>
+  <%= render "admin/shared/form_fields", form: form, record: @education, columns: ["school", "degree", "location", "start_date", "end_date", "expected_graduation", "gpa", "position"] %>
+  <div class="admin-form__actions">
+    <%= form.submit "Create", class: "admin-btn admin-btn--primary" %>
+    <%= link_to "Cancel", admin_educations_path, class: "admin-link" %>
+  </div>
+<% end %>

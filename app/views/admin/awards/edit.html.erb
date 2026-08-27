@@ -1,0 +1,8 @@
+<h1 class="admin-title">Edit Award</h1>
+<%= form_with model: @award, url: admin_award_path(@award.id), method: :patch, local: true, class: "admin-form" do |form| %>
+  <%= render "admin/shared/form_fields", form: form, record: @award, columns: ["name", "issuer", "year", "position"] %>
+  <div class="admin-form__actions">
+    <%= form.submit "Save", class: "admin-btn admin-btn--primary" %>
+    <%= link_to "Cancel", admin_awards_path, class: "admin-link" %>
+  </div>
+<% end %>

@@ -1,0 +1,8 @@
+<h1 class="admin-title">Edit Publication</h1>
+<%= form_with model: @publication, url: admin_publication_path(@publication.id), method: :patch, local: true, class: "admin-form" do |form| %>
+  <%= render "admin/shared/form_fields", form: form, record: @publication, columns: ["title", "publisher", "publication_date", "description", "methods", "doi_url", "position"] %>
+  <div class="admin-form__actions">
+    <%= form.submit "Save", class: "admin-btn admin-btn--primary" %>
+    <%= link_to "Cancel", admin_publications_path, class: "admin-link" %>
+  </div>
+<% end %>

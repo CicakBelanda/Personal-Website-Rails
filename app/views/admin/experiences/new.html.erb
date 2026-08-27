@@ -1,0 +1,8 @@
+<h1 class="admin-title">New Experience</h1>
+<%= form_with model: @experience, url: admin_experiences_path, local: true, class: "admin-form" do |form| %>
+  <%= render "admin/shared/form_fields", form: form, record: @experience, columns: ["title", "organization", "start_date", "end_date", "current", "position", "highlights"] %>
+  <div class="admin-form__actions">
+    <%= form.submit "Create", class: "admin-btn admin-btn--primary" %>
+    <%= link_to "Cancel", admin_experiences_path, class: "admin-link" %>
+  </div>
+<% end %>

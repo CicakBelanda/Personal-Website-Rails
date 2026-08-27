@@ -1,0 +1,8 @@
+<h1 class="admin-title">New Certification</h1>
+<%= form_with model: @certification, url: admin_certifications_path, local: true, class: "admin-form" do |form| %>
+  <%= render "admin/shared/form_fields", form: form, record: @certification, columns: ["name", "issuer", "position"] %>
+  <div class="admin-form__actions">
+    <%= form.submit "Create", class: "admin-btn admin-btn--primary" %>
+    <%= link_to "Cancel", admin_certifications_path, class: "admin-link" %>
+  </div>
+<% end %>

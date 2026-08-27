@@ -1,0 +1,32 @@
+<%
+# Shared form fields for admin resources.
+# locals: form (FormBuilder), columns (Array<Symbol>), record (ActiveRecord)
+record = local_assigns[:record]
+cols = local_assigns[:columns] || []
+array_fields = %w[highlights tech_stack]
+skip = %w[id created_at updated_at]
+%>
+<% cols.reject { |c| skip.include?(c.to_s) }.each do |c| %>
+  <% col = c.to_s %>
+  <div class="admin-field">
+    <%= form.label col, col.titleize, class: "admin-field__label" %>
+
+    <% if array_fields.include?(col) %>
+      <% val = record.send(c) %>
+      <% display = val.is_a?(Array) ? val.join($/) : val.to_s %>
+      <%= form.text_area col, value: display, rows: 4, class: "admin-input admin-input--area", placeholder: "One item per line" %>
+    <% elsif col.match?(/_(url|image)$/) || col == "doi_url" %>
+      <%= form.text_field col, class: "admin-input", placeholder: "https://..." %>
+    <% elsif col == "featured" || col == "current" %>
+      <%= form.check_box col, class: "admin-check" %>
+    <% elsif record.class.columns_hash[col]&.type == :text %>
+      <%= form.text_area col, rows: 4, class: "admin-input admin-input--area" %>
+    <% elsif col == "position" %>
+      <%= form.number_field col, class: "admin-input admin-input--num" %>
+    <% elsif record.class.columns_hash[col]&.type == :boolean %>
+      <%= form.check_box col, class: "admin-check" %>
+    <% else %>
+      <%= form.text_field col, class: "admin-input" %>
+    <% end %>
+  </div>
+<% end %>

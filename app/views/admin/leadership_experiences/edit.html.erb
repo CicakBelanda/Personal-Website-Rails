@@ -1,0 +1,8 @@
+<h1 class="admin-title">Edit Leadership Experience</h1>
+<%= form_with model: @leadership_experience, url: admin_leadership_experience_path(@leadership_experience.id), method: :patch, local: true, class: "admin-form" do |form| %>
+  <%= render "admin/shared/form_fields", form: form, record: @leadership_experience, columns: ["role", "organization", "position", "highlights"] %>
+  <div class="admin-form__actions">
+    <%= form.submit "Save", class: "admin-btn admin-btn--primary" %>
+    <%= link_to "Cancel", admin_leadership_experiences_path, class: "admin-link" %>
+  </div>
+<% end %>

@@ -9,6 +9,7 @@ class Project < ApplicationRecord
   end
   
   def tech_stack=(value)
+    value = value.split(/\r?\n/).map(&:strip).reject(&:empty?) if value.is_a?(String)
     self[:tech_stack] = value.is_a?(Array) ? value.to_json : value
   end
   

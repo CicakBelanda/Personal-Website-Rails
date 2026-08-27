@@ -1,0 +1,11 @@
+<h1 class="admin-title"><%= @award.send("name") %></h1>
+<dl class="admin-show">
+  <% @award.attributes.except("id", "created_at", "updated_at").each do |k, v| %>
+    <dt><%= k.titleize %></dt>
+    <dd><%= v.is_a?(Array) ? v.join(", ") : v.to_s %></dd>
+  <% end %>
+</dl>
+<div class="admin-form__actions">
+  <%= link_to "Edit", edit_admin_award_path(@award.id), class: "admin-btn" %>
+  <%= link_to "Back", admin_awards_path, class: "admin-link" %>
+</div>
