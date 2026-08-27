@@ -8,11 +8,13 @@ builder = "nixpacks"
 
 [deploy]
 # Runs on every successful build before the service starts.
-# db:prepare is idempotent: creates the DB if missing, runs all migrations
-# (primary + solid_queue/cache/cable), and loads seeds.rb on first create.
 releaseCommand = "bin/rails db:migrate db:seed"
 healthcheckPath = "/up"
-healthcheckTimeout = 100
+# The release command (db:migrate + db:seed) can take a while on a cold deploy, and the
+# web server only comes up afterwards. Give Railway a long enough window to keep retrying
+# /up until the server is actually listening (default 100s was too short -> "never healthy").
+healthcheckTimeout = 300
+healthcheckInterval = 10
 restartPolicy = "on_failure"
 
 [env]
