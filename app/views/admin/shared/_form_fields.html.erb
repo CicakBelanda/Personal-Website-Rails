@@ -3,7 +3,7 @@
 # locals: form (FormBuilder), columns (Array<Symbol>), record (ActiveRecord)
 record = local_assigns[:record]
 cols = local_assigns[:columns] || []
-array_fields = %w[highlights tech_stack key_features gallery_images]
+array_fields = %w[highlights tech_stack key_features]
 metrics_field = "metrics"
 skip = %w[id created_at updated_at]
 %>

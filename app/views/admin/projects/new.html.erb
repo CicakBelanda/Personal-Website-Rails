@@ -17,7 +17,17 @@
 
   <fieldset class="admin-group">
     <legend class="admin-group__legend">Media</legend>
-    <%= render "admin/shared/form_fields", form: form, record: @project, columns: ["cover_image", "gallery_images"] %>
+    <div class="admin-field">
+      <%= form.label :cover_image, "Cover Image" %>
+      <%= form.file_field :cover_image, accept: "image/*", class: "admin-input" %>
+      <p class="admin-hint">Upload an image from your device.</p>
+    </div>
+
+    <div class="admin-field">
+      <%= form.label :gallery_images, "Gallery Images" %>
+      <%= form.file_field :gallery_images, accept: "image/*", multiple: true, class: "admin-input" %>
+      <p class="admin-hint">Upload one or more images from your device.</p>
+    </div>
   </fieldset>
 
   <fieldset class="admin-group">

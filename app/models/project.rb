@@ -1,4 +1,9 @@
 class Project < ApplicationRecord
+  # Device uploads (Active Storage, local disk) — cover is a single image,
+  # gallery is a set of images. Replaces the old URL-string columns.
+  has_one_attached :cover_image
+  has_many_attached :gallery_images
+
   # For SQLite, store tech_stack as JSON/text
   def tech_stack
     self[:tech_stack] ||= []
@@ -14,7 +19,7 @@ class Project < ApplicationRecord
   end
 
   # Array-backed fields stored as JSON text; accept newline-separated strings from forms.
-  %w[key_features gallery_images].each do |field|
+  %w[key_features].each do |field|
     define_method("#{field}=") do |value|
       value = value.split(/\r?\n/).map(&:strip).reject(&:empty?) if value.is_a?(String)
       self[field] = value.is_a?(Array) ? value.to_json : value

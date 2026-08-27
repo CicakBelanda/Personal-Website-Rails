@@ -17,7 +17,33 @@
 
   <fieldset class="admin-group">
     <legend class="admin-group__legend">Media</legend>
-    <%= render "admin/shared/form_fields", form: form, record: @project, columns: ["cover_image", "gallery_images"] %>
+    <div class="admin-field">
+      <%= form.label :cover_image, "Cover Image" %>
+      <% if @project.cover_image.attached? %>
+        <div class="admin-current-media">
+          <%= image_tag @project.cover_image, class: "admin-thumb", alt: "" %>
+          <label class="admin-check"><%= form.check_box :cover_image_remove %> Remove current cover</label>
+        </div>
+      <% end %>
+      <%= form.file_field :cover_image, accept: "image/*", class: "admin-input" %>
+      <p class="admin-hint">Upload an image from your device (replaces the current cover).</p>
+    </div>
+
+    <div class="admin-field">
+      <%= form.label :gallery_images, "Gallery Images" %>
+      <% if @project.gallery_images.attached? %>
+        <div class="admin-current-media admin-current-media--row">
+          <% @project.gallery_images.each do |img| %>
+            <%= image_tag img, class: "admin-thumb", alt: "" %>
+          <% end %>
+        </div>
+      <% end %>
+      <%= form.file_field :gallery_images, accept: "image/*", multiple: true, class: "admin-input" %>
+      <p class="admin-hint">Upload one or more images from your device (added to the gallery).</p>
+      <% if @project.gallery_images.attached? %>
+        <label class="admin-check"><%= form.check_box :gallery_images_remove %> Remove all gallery images</label>
+      <% end %>
+    </div>
   </fieldset>
 
   <fieldset class="admin-group">

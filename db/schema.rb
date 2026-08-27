@@ -10,7 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_28_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_28_000002) do
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.integer "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.integer "record_id", null: false
+    t.string "record_type", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.string "content_type"
+    t.datetime "created_at", null: false
+    t.string "filename", null: false
+    t.string "key", null: false
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
   create_table "awards", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "issuer"
@@ -66,12 +88,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_000001) do
     t.string "category", null: false
     t.string "category_label"
     t.string "client"
-    t.string "cover_image"
     t.datetime "created_at", null: false
     t.string "demo_url"
     t.text "description", null: false
     t.boolean "featured", default: false
-    t.text "gallery_images"
     t.string "github_url"
     t.text "key_features"
     t.string "location"
@@ -103,4 +123,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_000001) do
     t.string "title", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
 end

@@ -63,8 +63,8 @@ class PagesController < ApplicationController
         techDetails: p.tech_details,
         keyFeatures: p.key_features,
         metrics: p.metrics,
-        gallery: p.gallery_images,
-        coverImage: p.cover_image,
+        gallery: p.gallery_images.attached? ? p.gallery_images.map { |g| media_url(g) } : [],
+        coverImage: p.cover_image.attached? ? media_url(p.cover_image) : nil,
         githubUrl: p.github_url,
         demoUrl: p.demo_url
       }
@@ -72,6 +72,12 @@ class PagesController < ApplicationController
   end
 
   private
+
+  # Public, absolute URL for an Active Storage attachment (served by the app,
+  # no auth required) so the case-study modal can render uploaded media.
+  def media_url(att)
+    Rails.application.routes.url_helpers.rails_blob_url(att, host: request.base_url)
+  end
 
   # Balanced interleave: round-robin the domains (ios -> ds -> web -> ...),
   # shuffling the domain order each load so it varies, then chunk the single

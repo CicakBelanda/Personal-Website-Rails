@@ -1527,7 +1527,13 @@ body.admin-shell {
 .admin-btn--primary { background: var(--accent); border-color: transparent; color: #fff; }
 .admin-btn--primary:hover { background: var(--accent-hover); }
 
-.admin-form { display: grid; gap: 1.1rem; max-width: 640px; }
+.admin-hint { font-size: 0.78rem; color: var(--text-muted); margin: 0.35rem 0 0; }
+.admin-current-media { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+.admin-current-media--row { gap: 0.5rem; }
+.admin-thumb { width: 72px; height: 72px; object-fit: cover; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface-2); }
+.admin-check { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--text-muted); }
+.admin-input[type="file"] { color: var(--text-muted); font-size: 0.85rem; }
+.admin-input[type="file"]::file-selector-button { margin-right: 0.7rem; padding: 0.4rem 0.8rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface-2); color: var(--text); cursor: pointer; }
 .admin-group { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.1rem 1.2rem 1.3rem; margin: 0; display: grid; gap: 1rem; }
 .admin-group__legend { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent-secondary); padding: 0 0.5rem; }
 .admin-field { display: grid; gap: 0.4rem; }
