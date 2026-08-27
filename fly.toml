@@ -1,0 +1,49 @@
+# Fly.io deployment config for PersonalWebsite (Rails 8.1 + Postgres + Propshaft/Importmap)
+# Deploy flow (run locally, after `fly auth login`):
+#   1. fly apps create personal-website          # or let `fly launch` create it
+#   2. fly pg create --name personal-website-db   # managed Postgres (Free/Standard)
+#   3. fly pg attach personal-website-db          # injects DATABASE_URL automatically
+#   4. fly secrets set RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 \
+#        SECRET_KEY_BASE=<generate-with: bin/rails secret> ADMIN_PASSWORD=<you>
+#   5. fly deploy
+# Railway's railway.toml and Render's render.yaml are ignored by Fly; all three can
+# deploy from this same repo.
+
+app = "personal-website"
+primary_region = "sin"   # Singapore — low latency to Indonesia; change if you prefer (nrt/hkg/lax/iad)
+
+[build]
+  # Uses the repo Dockerfile (Rails 8 + Propshaft/Importmap, no Node build step).
+
+[env]
+  # Non-secret env. Secrets (SECRET_KEY_BASE, ADMIN_PASSWORD, DATABASE_URL) are set
+  # via `fly secrets set` / `fly pg attach` — never committed here.
+  RAILS_ENV = "production"
+  RAILS_SERVE_STATIC_FILES = "1"
+  # Active Storage uploads go to local ephemeral disk on the free tier (lost on
+  # machine restart). For durable uploads, add a [mounts] volume + set
+  # RAILS_STORAGE_DIR=/data/storage (cheap, ~$0.15/GB-mo). Left off for $0 free tier.
+
+[http_service]
+  # Puma binds to $PORT (config/puma.rb: port ENV.fetch("PORT", 3000)); Fly forwards
+  # external traffic to internal_port 3000.
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0   # scales to zero when idle (free-tier friendly; cold start on first hit)
+
+  [[http_service.concurrency]]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 250
+
+  # HTTP health check on Rails' /up endpoint (DB-aware).
+  [[http_service.checks]]
+    type = "http"
+    path = "/up"
+    method = "get"
+    interval = "15s"
+    timeout = "5s"
+    grace_period = "30s"
+    # tolerate a brief cold start after scale-to-zero
