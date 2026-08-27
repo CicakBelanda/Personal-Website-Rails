@@ -16,6 +16,10 @@ healthcheckPath = "/up"
 healthcheckTimeout = 300
 healthcheckInterval = 10
 restartPolicy = "on_failure"
+# Bind to Railway's injected $PORT (Railway healthchecks that port). Fall back to 3000
+# for local/dev. Without this, Puma defaults to 3000 and Railway's healthcheck on $PORT
+# gets "connection refused" -> "service unavailable" forever.
+startCommand = "bin/rails server -b 0.0.0.0 -p ${PORT:-3000}"
 
 [env]
 RAILS_ENV = "production"
