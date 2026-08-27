@@ -1,4 +1,4 @@
-<button type="button" class="project-card project-card--<%= variant %>" data-action="click->project-modal#open" data-project-id="<%= project.id %>" aria-haspopup="dialog" aria-label="Open <%= project.title %> case study">
+<button type="button" class="project-card project-card--<%= variant %>" data-action="mouseenter->project-modal#rememberPreScroll touchstart->project-modal#rememberPreScroll click->project-modal#open" data-project-id="<%= project.id %>" aria-haspopup="dialog" aria-label="Open <%= project.title %> case study">
   <div class="project-card__media">
     <% if project.cover_image.attached? %>
       <%= image_tag project.cover_image, class: "project-card__img", alt: "#{project.title} cover", loading: "lazy", decoding: "async" %>

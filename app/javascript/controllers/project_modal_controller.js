@@ -23,7 +23,16 @@ export default class extends Controller {
     this.unlockScroll()
   }
 
+  // Capture the page scroll position on hover / touch-start — this fires BEFORE the click
+  // that opens the modal, so it reflects where the user actually is (the native click
+  // focus-scroll would otherwise shift the page and we could never observe the pre-click
+  // value from inside the click handler).
+  rememberPreScroll(event) {
+    this._preScroll = window.scrollY
+  }
+
   open(event) {
+    event.preventDefault()
     const id = event.currentTarget.dataset.projectId
     const data = this.projectsValue.find(p => String(p.id) === String(id))
     if (!data) return
@@ -46,7 +55,7 @@ export default class extends Controller {
       this.backdropTarget.classList.remove("is-open", "is-closing")
       this.unlockScroll()
       if (this.lastFocused && typeof this.lastFocused.focus === "function") {
-        this.lastFocused.focus()
+        this.lastFocused.focus({ preventScroll: true })
       }
     }
     if (this.reducedMotion()) {
@@ -66,6 +75,12 @@ export default class extends Controller {
   }
 
   show() {
+    // Use the position captured on hover/touch (pre-click). If unavailable (keyboard
+    // open), fall back to the live position.
+    this.scrollY = (this._preScroll != null) ? this._preScroll : window.scrollY
+    // The click may have focus-scrolled the card into view; snap straight back to the
+    // captured position instantly so the page doesn't visibly shift when the modal opens.
+    window.scrollTo({ top: this.scrollY, behavior: "instant" })
     this.rootTarget.hidden = false
     this.lockScroll()
     if (!this.reducedMotion()) {
@@ -75,24 +90,26 @@ export default class extends Controller {
       this.dialogTarget.classList.add("is-open")
       this.backdropTarget.classList.add("is-open")
     }
-    requestAnimationFrame(() => this.closeTarget.focus())
+    requestAnimationFrame(() => this.closeTarget.focus({ preventScroll: true }))
   }
 
   lockScroll() {
-    this.scrollY = window.scrollY
-    document.body.style.position = "fixed"
-    document.body.style.top = `-${this.scrollY}px`
-    document.body.style.width = "100%"
-    document.body.classList.add("modal-open")
+    // Lock scrolling by hiding overflow on the scroll container. This preserves the
+    // current scroll position (unlike position:fixed, which resets it) so closing the
+    // modal returns the page exactly where it was — no jump/refresh effect.
+    document.documentElement.style.overflow = "hidden"
+    document.body.style.overflow = "hidden"
+    document.documentElement.classList.add("modal-open")
   }
 
   unlockScroll() {
-    if (document.body.classList.contains("modal-open")) {
-      document.body.classList.remove("modal-open")
-      document.body.style.position = ""
-      document.body.style.top = ""
-      document.body.style.width = ""
-      window.scrollTo(0, this.scrollY || 0)
+    if (document.documentElement.classList.contains("modal-open")) {
+      // Restore instantly while smooth-scroll is still disabled (modal-open), so the
+      // page snaps back to the pre-open position with no animated slide.
+      window.scrollTo({ top: this.scrollY || 0, behavior: "instant" })
+      document.documentElement.classList.remove("modal-open")
+      document.documentElement.style.overflow = ""
+      document.body.style.overflow = ""
     }
   }
 

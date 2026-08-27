@@ -6,6 +6,10 @@
 
 /* ---------- Base: smooth scroll + anchor offset for fixed nav (Phase 3) ---------- */
 html { scroll-behavior: smooth; }
+/* While a modal is open we lock scroll via position:fixed; disabling smooth scroll
+   here prevents the close animation from "sliding" the page from top back to the
+   saved position (it should snap instantly with no refresh-like jump). */
+html.modal-open { scroll-behavior: auto; }
 section[id] { scroll-margin-top: 90px; }
 
 /* ---------- Design tokens (dark-only, PRD §7.1 / §8) ---------- */
