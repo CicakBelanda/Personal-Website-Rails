@@ -21,7 +21,14 @@
           </div>
           <div class="project-card__content">
             <span class="project-card__category project-card__category--<%= project.category %>"><%= project.category_label.presence || Project.category_labels[project.category] %></span>
-            <h3 class="project-card__title"><%= project.title %></h3>
+            <h3 class="project-card__title">
+              <% primary_url = project.demo_url.presence || project.github_url.presence %>
+              <% if primary_url %>
+                <%= link_to project.title, primary_url, target: "_blank", rel: "noopener noreferrer", class: "project-card__title-link stretched-link" %>
+              <% else %>
+                <%= project.title %>
+              <% end %>
+            </h3>
             <p class="project-card__description"><%= project.description %></p>
 
             <% tech_stack = project.tech_stack.is_a?(Array) ? project.tech_stack : JSON.parse(project.tech_stack || '[]') %>

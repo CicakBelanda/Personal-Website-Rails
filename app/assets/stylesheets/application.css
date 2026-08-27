@@ -679,6 +679,7 @@ section { position: relative; }
 .project-card {
   display: flex;
   flex-direction: column;
+  position: relative;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
@@ -742,6 +743,15 @@ section { position: relative; }
   color: var(--accent-secondary);
 }
 .project-card__title { font-size: 1.3rem; margin-bottom: 0.55rem; }
+.project-card__title-link { color: inherit; text-decoration: none; }
+/* Stretched link: ::after covers the whole .project-card (its positioned ancestor),
+   so the entire card is clickable to the project's primary URL. Buttons stay above it. */
+.project-card__title-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
 .project-card__description {
   font-size: 0.9rem;
   line-height: 1.55;
@@ -767,6 +777,8 @@ section { position: relative; }
   display: flex;
   gap: 0.6rem;
   margin-top: auto;
+  position: relative;
+  z-index: 2;
 }
 .project-card__link { flex: 1; }
 
