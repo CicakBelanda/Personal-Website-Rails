@@ -2,6 +2,9 @@
 # grounded in the PRD's stated categories / technologies / emphasis — no
 # invented metrics or achievements (PRD §53).
 
+# Only seed when the database is empty. On redeploys this is a no-op so any
+# content edited through the admin CMS is preserved.
+if Project.count == 0
 Project.delete_all
 
 projects = [
@@ -229,3 +232,4 @@ awards = [
 ]
 awards.each { |a| Award.create!(a) }
 puts "✅ Seeded #{Award.count} awards."
+end

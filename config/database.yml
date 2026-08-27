@@ -5,36 +5,36 @@
 #   gem "sqlite3"
 #
 default: &default
-  adapter: sqlite3
-  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  adapter: postgresql
+  encoding: unicode
+  url: <%= ENV.fetch("DATABASE_URL") { "postgres://localhost/#{Rails.env}" } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  ssl_mode: <%= if ENV.fetch("RAILS_ENV", "development") == "production" then "require" else "prefer" end %>
   timeout: 5000
 
 development:
   <<: *default
-  database: storage/development.sqlite3
+  database: personal_website_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: storage/test.sqlite3
+  database: personal_website_test
 
-# Store production database in the storage/ directory, which by default
-# is mounted as a persistent Docker volume in config/deploy.yml.
+# Production on Railway: PostgreSQL add-on injects DATABASE_URL.
+# Solid Cache / Queue / Cable share the same PostgreSQL database (single DB instance).
 production:
   primary:
     <<: *default
-    database: storage/production.sqlite3
+    database: <%= ENV.fetch("DATABASE_NAME", "personal_website_production") %>
   cache:
     <<: *default
-    database: storage/production_cache.sqlite3
     migrations_paths: db/cache_migrate
   queue:
     <<: *default
-    database: storage/production_queue.sqlite3
     migrations_paths: db/queue_migrate
   cable:
     <<: *default
-    database: storage/production_cable.sqlite3
     migrations_paths: db/cable_migrate
