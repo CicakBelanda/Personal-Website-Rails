@@ -1,47 +1,29 @@
-<section id="projects" class="section projects reveal" data-controller="project-filter">
+<section id="projects" class="section projects reveal">
   <div class="container">
     <div class="section__head">
       <span class="eyebrow">Work</span>
       <h2 class="section__title">Featured Projects</h2>
-      <p class="section__sub">A mix of mobile, data and web things I've built.</p>
+      <p class="section__sub">Selected work across native iOS, machine learning, and data science.</p>
     </div>
 
-    <div class="projects__filter">
-      <button type="button" class="projects__filter-btn active" data-project-filter-target="filterButton" data-action="click->project-filter#filter" data-filter="all">All</button>
-      <button type="button" class="projects__filter-btn" data-project-filter-target="filterButton" data-action="click->project-filter#filter" data-filter="ios">iOS Apps</button>
-      <button type="button" class="projects__filter-btn" data-project-filter-target="filterButton" data-action="click->project-filter#filter" data-filter="data_science">Data Science</button>
-      <button type="button" class="projects__filter-btn" data-project-filter-target="filterButton" data-action="click->project-filter#filter" data-filter="software_dev">Software Dev</button>
-    </div>
-
-    <div class="projects__grid">
-      <% @projects.each do |project| %>
-        <button type="button" class="project-card" data-project-filter-target="projectCard" data-project-category="<%= project.category %>" data-action="click->project-modal#open" data-project-id="<%= project.id %>" aria-haspopup="dialog" aria-label="Open <%= project.title %> project details">
-          <div class="project-card__image">
-            <%= project.title.split(' ').map(&:capitalize).join(' ') %>
-          </div>
-          <div class="project-card__content">
-            <span class="project-card__category project-card__category--<%= project.category %>"><%= project.category_label.presence || Project.category_labels[project.category] %></span>
-            <h3 class="project-card__title"><%= project.title %></h3>
-            <p class="project-card__description"><%= project.short_description.presence || project.description %></p>
-
-            <% tech_stack = project.tech_stack.is_a?(Array) ? project.tech_stack : JSON.parse(project.tech_stack || '[]') %>
-            <div class="project-card__tech">
-              <% tech_stack.each do |tech| %>
-                <span class="tech-badge"><%= tech %></span>
-              <% end %>
-            </div>
-
-            <div class="project-card__links">
-              <% if project.github_url.present? %>
-                <span class="project-card__link btn btn-outline btn-sm">GitHub</span>
-              <% end %>
-              <% if project.demo_url.present? %>
-                <span class="project-card__link btn btn-outline btn-sm"><%= project.demo_url.include?('itunes.apple.com') ? 'App Store' : 'Live Demo' %></span>
-              <% end %>
-            </div>
-          </div>
-        </button>
+    <div class="projects__grid projects__grid--featured">
+      <% @featured_projects.each do |project| %>
+        <%= render "pages/project_card", project: project, variant: "featured" %>
       <% end %>
     </div>
+
+    <% if @other_projects.any? %>
+      <div class="projects__other">
+        <div class="projects__other-head">
+          <h3 class="projects__other-title">Other Projects</h3>
+          <span class="projects__other-rule" aria-hidden="true"></span>
+        </div>
+        <div class="projects__grid projects__grid--other">
+          <% @other_projects.each do |project| %>
+            <%= render "pages/project_card", project: project, variant: "other" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </section>

@@ -72,7 +72,8 @@ class PagesController < ApplicationController
 
   def home
     @projects = Project.ordered
-    @featured_projects = Project.featured.limit(3)
+    @featured_projects = Project.featured.limit(4)
+    @other_projects = Project.where(featured: false).order(:position)
     @experiences = Experience.ordered
     @educations = Education.ordered
     @publications = Publication.ordered

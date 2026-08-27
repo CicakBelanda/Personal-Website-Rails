@@ -37,34 +37,45 @@
         <div class="project-modal__chips" data-project-modal-target="tech"></div>
       </section>
 
-      <!-- PROBLEM -->
-      <section class="project-modal__section" data-project-modal-target="problemSection">
-        <h3 class="project-modal__label">Problem</h3>
-        <p class="project-modal__body" data-project-modal-target="problem"></p>
-      </section>
-
-      <!-- SOLUTION -->
-      <section class="project-modal__section" data-project-modal-target="solutionSection">
-        <h3 class="project-modal__label">Solution</h3>
-        <p class="project-modal__body" data-project-modal-target="solution"></p>
-      </section>
-
       <!-- TECHNICAL IMPLEMENTATION -->
       <section class="project-modal__section" data-project-modal-target="techDetailsSection">
         <h3 class="project-modal__label">Technical Implementation</h3>
         <p class="project-modal__body" data-project-modal-target="techDetails"></p>
       </section>
 
+      <!-- CASE STUDY (numbered) -->
+      <div class="project-modal__casestudy" data-project-modal-target="caseStudy">
+        <h3 class="project-modal__casestudy-head">Case Study</h3>
+
+        <section class="project-modal__step" data-project-modal-target="problemSection">
+          <span class="project-modal__step-no">01</span>
+          <div class="project-modal__step-body">
+            <h4 class="project-modal__step-label">Problem</h4>
+            <p class="project-modal__body" data-project-modal-target="problem"></p>
+          </div>
+        </section>
+
+        <section class="project-modal__step" data-project-modal-target="solutionSection">
+          <span class="project-modal__step-no">02</span>
+          <div class="project-modal__step-body">
+            <h4 class="project-modal__step-label">Solution</h4>
+            <p class="project-modal__body" data-project-modal-target="solution"></p>
+          </div>
+        </section>
+
+        <section class="project-modal__step project-modal__metrics" data-project-modal-target="metricsSection">
+          <span class="project-modal__step-no">03</span>
+          <div class="project-modal__step-body">
+            <h4 class="project-modal__step-label">Results</h4>
+            <div class="project-modal__metrics-grid" data-project-modal-target="metrics"></div>
+          </div>
+        </section>
+      </div>
+
       <!-- KEY FEATURES -->
       <section class="project-modal__section" data-project-modal-target="featuresSection">
         <h3 class="project-modal__label">Key Features</h3>
         <ul class="project-modal__features" data-project-modal-target="features"></ul>
-      </section>
-
-      <!-- RESULTS / METRICS -->
-      <section class="project-modal__section project-modal__metrics" data-project-modal-target="metricsSection">
-        <h3 class="project-modal__label">Results</h3>
-        <div class="project-modal__metrics-grid" data-project-modal-target="metrics"></div>
       </section>
 
       <!-- GALLERY -->

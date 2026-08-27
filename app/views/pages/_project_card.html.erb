@@ -1,0 +1,32 @@
+<button type="button" class="project-card project-card--<%= variant %>" data-action="click->project-modal#open" data-project-id="<%= project.id %>" aria-haspopup="dialog" aria-label="Open <%= project.title %> case study">
+  <div class="project-card__media">
+    <% if project.cover_image.attached? %>
+      <%= image_tag project.cover_image, class: "project-card__img", alt: "#{project.title} cover", loading: "lazy", decoding: "async" %>
+    <% else %>
+      <div class="project-card__fallback" aria-hidden="true"><%= project.title.split.map(&:first).join.upcase[0,2] %></div>
+    <% end %>
+    <span class="project-card__category project-card__category--<%= project.category %>"><%= project.category_label.presence || Project.category_labels[project.category] %></span>
+  </div>
+
+  <div class="project-card__content">
+    <h3 class="project-card__title"><%= project.title %></h3>
+    <p class="project-card__description"><%= project.short_description.presence || project.description %></p>
+
+    <% tech_stack = project.tech_stack.is_a?(Array) ? project.tech_stack : JSON.parse(project.tech_stack || "[]") rescue [] %>
+    <% if tech_stack.any? %>
+      <div class="project-card__tech">
+        <% tech_stack.first(5).each do |tech| %>
+          <span class="tech-badge"><%= tech %></span>
+        <% end %>
+        <% if tech_stack.length > 5 %><span class="tech-badge tech-badge--more">+<%= tech_stack.length - 5 %></span><% end %>
+      </div>
+    <% end %>
+
+    <div class="project-card__footer">
+      <% if project.project_date.present? %>
+        <span class="project-card__date"><%= project.project_date %></span>
+      <% end %>
+      <span class="project-card__cta">View Case Study <span class="project-card__cta-arrow" aria-hidden="true">&rarr;</span></span>
+    </div>
+  </div>
+</button>

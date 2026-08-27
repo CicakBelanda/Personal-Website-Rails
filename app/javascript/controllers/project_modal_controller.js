@@ -8,7 +8,8 @@ export default class extends Controller {
     "overview", "techSection", "tech",
     "problemSection", "problem", "solutionSection", "solution",
     "techDetailsSection", "techDetails", "featuresSection", "features",
-    "metricsSection", "metrics", "gallerySection", "gallery", "actions", "cover"
+    "metricsSection", "metrics", "gallerySection", "gallery", "actions", "cover",
+    "caseStudy"
   ]
 
   connect() {
@@ -154,6 +155,10 @@ export default class extends Controller {
     this.renderText(this.techDetailsSectionTarget, this.techDetailsTarget, d.techDetails)
     this.renderList(this.featuresSectionTarget, this.featuresTarget, d.keyFeatures)
     this.renderMetrics(d.metrics)
+    // Hide the entire Case Study block if none of its parts have content.
+    const caseHas = [d.problem, d.solution].some(v => v && String(v).trim().length) ||
+      (Array.isArray(d.metrics) && d.metrics.some(m => m && (m.value || m.label)))
+    this.toggle(this.caseStudyTarget, caseHas)
     this.renderGallery(d)
 
     // actions (only existing urls)
