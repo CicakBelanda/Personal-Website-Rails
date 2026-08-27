@@ -14,7 +14,7 @@ class Project < ApplicationRecord
   
   validates :title, presence: true
   validates :description, presence: true
-  validates :category, presence: true, inclusion: { in: %w[ios data_science software_dev] }
+  validates :category, presence: true
   validates :tech_stack, presence: true
   
   scope :featured, -> { where(featured: true).order(:position) }

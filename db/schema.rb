@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_01_01_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_27_000001) do
   create_table "projects", force: :cascade do |t|
     t.string "category", null: false
+    t.string "category_label"
     t.string "cover_image"
     t.datetime "created_at", null: false
     t.string "demo_url"
@@ -20,6 +21,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_01_01_000001) do
     t.boolean "featured", default: false
     t.string "github_url"
     t.integer "position", default: 0
+    t.text "problem"
+    t.string "project_date"
+    t.string "role"
+    t.text "solution"
+    t.text "tech_details"
     t.text "tech_stack"
     t.string "title", null: false
     t.datetime "updated_at", null: false

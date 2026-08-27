@@ -20,7 +20,7 @@
             <%= project.title.split(' ').map(&:capitalize).join(' ') %>
           </div>
           <div class="project-card__content">
-            <span class="project-card__category project-card__category--<%= project.category %>"><%= Project.category_labels[project.category] %></span>
+            <span class="project-card__category project-card__category--<%= project.category %>"><%= project.category_label.presence || Project.category_labels[project.category] %></span>
             <h3 class="project-card__title"><%= project.title %></h3>
             <p class="project-card__description"><%= project.description %></p>
 

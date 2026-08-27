@@ -2,20 +2,18 @@
   <div class="container">
     <div class="hero__avatar">KJ</div>
     <h1 class="hero__title">
-      Hi, I'm <span class="gradient-text">Kevin J</span>
+      Kevin Joseph<br>Handoyo
     </h1>
     <p class="hero__subtitle">
-      I build things at the intersection of mobile, data and the web.
+      iOS Developer · ML Engineer · Data Scientist
     </p>
-    <div class="hero__roles">
-      <span class="hero__role">iOS Developer</span>
-      <span class="hero__role">Data Scientist</span>
-      <span class="hero__role">Software Engineer</span>
-    </div>
+    <p class="hero__lead">
+      Building native applications and intelligent, data-driven systems across mobile development, machine learning, and data science.
+    </p>
     <div class="hero__cta">
-      <a href="#projects" class="btn btn-primary">View Projects</a>
-      <a href="files/resume.pdf" class="btn btn-secondary">Download Resume</a>
-      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      <a href="#projects" class="btn btn-primary">View Work</a>
+      <a href="files/resume.pdf" class="btn btn-secondary" download>Download CV</a>
+      <a href="#contact" class="btn btn-outline">Contact Me</a>
     </div>
   </div>
 </section>
@@ -24,5 +22,7 @@
 <%= render "pages/about" %>
 <%= render "pages/skills" %>
 <%= render "pages/projects" %>
+<%= content_tag :section, "", id: "experience", class: "section" %>
+<%= content_tag :section, "", id: "research", class: "section" %>
 <%= render "pages/contact" %>
 <%= render "shared/footer" %>
