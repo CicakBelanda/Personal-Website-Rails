@@ -1,4 +1,4 @@
-<section id="projects" class="section projects reveal">
+<section id="projects" class="section projects reveal" data-controller="project-filter">
   <div class="container">
     <div class="section__head">
       <span class="eyebrow">Work</span>
@@ -6,16 +6,16 @@
       <p class="section__sub">A mix of mobile, data and web things I've built.</p>
     </div>
 
-    <div class="projects__filter" data-controller="project-filter">
-      <button type="button" class="projects__filter-btn active" data-action="click->project-filter#filter" data-filter="all">All</button>
-      <button type="button" class="projects__filter-btn" data-action="click->project-filter#filter" data-filter="ios">iOS Apps</button>
-      <button type="button" class="projects__filter-btn" data-action="click->project-filter#filter" data-filter="data_science">Data Science</button>
-      <button type="button" class="projects__filter-btn" data-action="click->project-filter#filter" data-filter="software_dev">Software Dev</button>
+    <div class="projects__filter">
+      <button type="button" class="projects__filter-btn active" data-project-filter-target="filterButton" data-action="click->project-filter#filter" data-filter="all">All</button>
+      <button type="button" class="projects__filter-btn" data-project-filter-target="filterButton" data-action="click->project-filter#filter" data-filter="ios">iOS Apps</button>
+      <button type="button" class="projects__filter-btn" data-project-filter-target="filterButton" data-action="click->project-filter#filter" data-filter="data_science">Data Science</button>
+      <button type="button" class="projects__filter-btn" data-project-filter-target="filterButton" data-action="click->project-filter#filter" data-filter="software_dev">Software Dev</button>
     </div>
 
     <div class="projects__grid">
       <% @projects.each do |project| %>
-        <article class="project-card" data-project-category="<%= project.category %>">
+        <article class="project-card" data-project-filter-target="projectCard" data-project-category="<%= project.category %>">
           <div class="project-card__image">
             <%= project.title.split(' ').map(&:capitalize).join(' ') %>
           </div>
