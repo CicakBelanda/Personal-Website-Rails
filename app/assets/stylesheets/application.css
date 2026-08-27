@@ -694,6 +694,7 @@ section { position: relative; }
 .project-card.is-visible {
   opacity: 1;
   transform: translateY(0);
+  will-change: auto;
 }
 .project-card:nth-child(2) { transition-delay: 0.08s; }
 .project-card:nth-child(3) { transition-delay: 0.16s; }
@@ -910,6 +911,7 @@ section { position: relative; }
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+  will-change: auto;
 }
 
 1|/* ---------- Phase 2 sections: Experience, Education, Research, Leadership, Certs ---------- */
