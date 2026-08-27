@@ -40,14 +40,14 @@ export default class extends Controller {
   }
 
   over(e) {
-    if (e.target.closest("a, button, [data-cursor='hover'], input, textarea, select, .skill-node")) {
+    if (e.target.closest("a, button, [data-cursor='hover'], input, textarea, select, .skill-node, .skill-discipline, .skill-tech")) {
       this.hovering = true
       this.ringTarget.classList.add("is-hover")
     }
   }
 
   out(e) {
-    if (e.target.closest("a, button, [data-cursor='hover'], input, textarea, select, .skill-node")) {
+    if (e.target.closest("a, button, [data-cursor='hover'], input, textarea, select, .skill-node, .skill-discipline, .skill-tech")) {
       this.hovering = false
       this.ringTarget.classList.remove("is-hover")
     }

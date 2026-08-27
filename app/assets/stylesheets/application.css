@@ -478,170 +478,244 @@ section { position: relative; }
   color: var(--text-muted);
 }
 
-/* ---------- Skills: interactive network (primary) + chip panorama (fallback) ---------- */
+/* ---------- Skills: interactive Technical Ecosystem (discipline -> technologies -> projects) ---------- */
 .skills { background: var(--surface); }
 
-/* HINT */
 .skills__hint {
   margin-top: 0.5rem;
   font-size: 0.85rem;
   color: var(--text-muted);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-.skills__hint::before {
-  content: "→";
-  display: inline-block;
-  animation: nudge 1.6s ease-in-out infinite;
-}
-@keyframes nudge {
-  0%, 100% { transform: translateX(-3px); }
-  50% { transform: translateX(3px); }
 }
 
-/* PRIMARY: SVG constellation network */
-.skills__network {
+/* layout: branches stacked, detail panel to the side on wide screens */
+.skills-map {
   position: relative;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 1.25rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 2rem 2.5rem;
+  max-width: 1080px;
+  margin: 1.5rem auto 0;
+  align-items: start;
 }
-.skills__svg {
-  width: 100%;
-  height: auto;
-  display: block;
-  overflow: visible;
-}
-.skills__link {
-  stroke: var(--border-strong);
-  stroke-width: 1;
-  opacity: 0.35;
-  transition: opacity 0.35s ease, stroke 0.35s ease;
-}
-.skills__hub { opacity: 0.9; }
-.skills__hub-label {
-  fill: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-anchor: middle;
-  transition: fill 0.3s ease;
-}
-.skill-node { cursor: pointer; transition: opacity 0.3s ease; pointer-events: all; }
-.skill-node__hit { pointer-events: all; }
-.skill-node__dot {
-  transition: r 0.25s ease, filter 0.25s ease;
-  pointer-events: none;
-}
-.skill-node__label {
-  fill: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 600;
-  text-anchor: middle;
-  transition: fill 0.3s ease;
-  pointer-events: none;
-}
-.skill-node:hover .skill-node__dot,
-.skill-node.is-active .skill-node__dot {
-  filter: drop-shadow(0 0 6px currentColor);
-}
-/* hover a node -> highlight its domain cluster, dim the rest */
-.skills__network:has(.skill-node.is-active) .skill-node.is-dim,
-.skills__network:has(.skill-node.is-active) .skills__link.is-dim,
-.skills__network:has(.skill-node.is-active) .skills__hub-label.is-dim { opacity: 0.12; }
-.skills__network:has(.skill-node.is-active) .skill-node.is-active .skill-node__label,
-.skills__network:has(.skill-node.is-active) .skills__hub-label.is-active { fill: var(--text-primary); }
-.skills__link.is-active { opacity: 0.7; stroke: var(--accent); }
 
-.skills__tooltip {
-  position: fixed;
-  top: 0; left: 0;
-  z-index: 60;
-  padding: 0.4rem 0.8rem;
-  background: var(--surface-elevated);
-  border: 1px solid var(--label-accent, var(--accent));
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
+.skill-branch { display: block; }
+
+/* PRIMARY DISCIPLINE — large typographic anchor, not a card */
+.skill-discipline {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 0.1rem 1rem;
+  background: none;
+  border: 0;
+  border-left: 2px solid var(--border);
+  padding: 0.9rem 0 0.9rem 1.1rem;
+  text-align: left;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 0.3s ease, background 0.3s ease, padding 0.3s ease;
+}
+.skill-discipline:hover,
+.skill-discipline:focus-visible {
+  border-left-color: var(--accent);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 70%);
+  outline: none;
+}
+.skill-discipline:focus-visible { box-shadow: inset 0 0 0 1px var(--accent); }
+.skill-discipline.is-active,
+.skill-branch.is-open .skill-discipline {
+  border-left-color: var(--accent);
+}
+.skill-discipline__index {
+  grid-row: 1 / span 2;
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0.55;
+  line-height: 1;
+}
+.skill-discipline__title {
+  font-size: clamp(1.35rem, 3.4vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
-  pointer-events: none;
-  opacity: 0;
-  transform: translate(16px, 16px);
-  transition: opacity 0.18s ease;
-  box-shadow: var(--shadow-md);
+}
+.skill-discipline__blurb {
+  grid-column: 2;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  max-width: 46ch;
+  margin-top: 0.15rem;
+}
+.skill-discipline__rule {
+  display: none;
+}
+.skill-discipline__count {
+  grid-row: 1 / span 2;
+  grid-column: 3;
+  align-self: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   white-space: nowrap;
 }
-.skills__tooltip.is-visible { opacity: 1; }
-
-/* FALLBACK: chip panorama (shown only when no JS / reduced motion) */
-.skills__panorama { display: none; }
-
-@media (prefers-reduced-motion: reduce) {
-  .skills__network { display: none; }
-  .skills__panorama { display: block; }
-  .skills__hint::before { animation: none; }
+.skill-discipline__chev {
+  grid-row: 1 / span 2;
+  grid-column: 3;
+  display: none;
 }
-/* No-JS: hide network, show panorama grid */
-.skills__network.no-js { display: none; }
-.skills__network.no-js ~ .skills__panorama { display: block; }
 
-.skills__panorama {
-  position: relative;
-  padding: 0 1.25rem 2rem;
-}
-.skills__rows {
+/* TECHNOLOGY rows — elegant nodes, progressive disclosure */
+.skill-techs {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1.25rem;
-  padding: 1rem 0;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.9rem;
+  padding: 0.9rem 0 0.4rem 1.1rem;
 }
-.skills__row { overflow: hidden; }
-.skills__row-track {
-  display: flex;
-  gap: 1rem;
-  width: max-content;
-  will-change: transform;
-  padding: 0.5rem 0;
-}
-.skill-chip {
-  flex: 0 0 auto;
+.skill-tech {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
   background: var(--surface-elevated);
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0.55rem 1.1rem 0.55rem 0.6rem;
-  font-size: 0.92rem;
+  border-radius: 10px;
+  padding: 0.42rem 0.7rem;
+  font: inherit;
+  font-size: 0.86rem;
   font-weight: 600;
-  color: var(--text-primary);
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition-fast);
-  white-space: nowrap;
+  color: var(--text-secondary);
+  cursor: pointer;
+  min-height: 40px;
+  transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease, transform 0.25s ease, opacity 0.3s ease;
+  opacity: 0;
+  transform: translateY(6px);
 }
-.skill-chip:hover {
+.skill-tech.is-in { opacity: 1; transform: none; }
+.skill-tech:hover,
+.skill-tech:focus-visible {
   border-color: var(--accent);
-  color: var(--accent);
-  transform: translateY(-3px);
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface-elevated));
+  outline: none;
+  transform: translateY(-2px);
 }
-.skill-chip__logo {
-  width: 34px;
-  height: 34px;
+.skill-tech:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 45%, transparent); }
+.skill-tech__dot {
+  width: 7px; height: 7px;
   border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--surface);
-  font-size: 1.1rem;
-  line-height: 1;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
   flex: 0 0 auto;
-  overflow: hidden;
 }
-.skill-chip__logo .devicon { font-size: 1.35rem; line-height: 1; }
-.skill-chip__logo .devicon-plain,
-.skill-chip__logo .devicon-original { color: inherit; }
+.skill-tech__used {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1;
+  padding: 0.18rem 0.4rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+}
+
+/* Additional / supporting technologies — subdued, smaller */
+.skill-extra {
+  grid-column: 1 / -1;
+  margin-top: 0.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--border);
+}
+.skill-extra__label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.7rem;
+}
+.skill-extra__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.7rem;
+}
+.skill-tech--extra {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  border-style: dashed;
+  opacity: 1;
+  transform: none;
+}
+.skill-tech--extra .skill-tech__dot { background: var(--text-muted); box-shadow: none; }
+
+/* DETAIL panel */
+.skill-detail {
+  position: sticky;
+  top: 110px;
+  align-self: start;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+  padding: 1.2rem 1.3rem;
+  min-height: 160px;
+  box-shadow: var(--shadow-sm);
+}
+.skill-detail.is-active { border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
+.skill-detail__placeholder { color: var(--text-muted); font-size: 0.9rem; margin: 0; }
+.skill-detail__name {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+.skill-detail__desc { margin: 0 0 1rem; color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5; }
+.skill-detail__used {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.skill-detail__used--none { color: var(--text-muted); }
+.skill-detail__projects { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+.skill-detail__projects li {
+  position: relative;
+  padding-left: 1rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.skill-detail__projects li::before {
+  content: "→";
+  position: absolute; left: 0;
+  color: var(--accent);
+}
+
+/* MOBILE: stack to single column, detail panel becomes an inline block under the map */
+@media (max-width: 860px) {
+  .skills-map { grid-template-columns: 1fr; gap: 1.2rem; }
+  .skill-detail {
+    position: static;
+    grid-column: 1 / -1;
+    order: 5;
+  }
+  .skill-extra { order: 4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-tech { opacity: 1; transform: none; transition: border-color 0.2s ease, color 0.2s ease; }
+  .skill-tech.is-in { transition: none; }
+  .skill-discipline { transition: none; }
+}
+
+
 
 /* ---------- Projects ---------- */
 .projects__filter {

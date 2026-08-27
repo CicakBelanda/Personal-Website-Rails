@@ -1,46 +1,88 @@
 class PagesController < ApplicationController
-  SKILLS = [
-    { name: "Swift", logo: "devicon devicon-swift-plain", placeholder: nil, domain: :ios },
-    { name: "SwiftUI", logo: "devicon devicon-swiftui-plain", placeholder: nil, domain: :ios },
-    { name: "UIKit", logo: nil, placeholder: "U", domain: :ios },
-    { name: "TestFlight", logo: "devicon devicon-apple-plain", placeholder: nil, domain: :ios },
-    { name: "App Store Connect", logo: "devicon devicon-apple-plain", placeholder: nil, domain: :ios },
-    { name: "Fastlane CI/CD", logo: nil, placeholder: "F", domain: :ios },
-    { name: "CoreData", logo: nil, placeholder: "C", domain: :ios },
-    { name: "Swift Package Manager", logo: "devicon devicon-swift-plain", placeholder: nil, domain: :ios },
-    { name: "Python", logo: "devicon devicon-python-plain", placeholder: nil, domain: :ds },
-    { name: "Pandas", logo: "devicon devicon-pandas-plain", placeholder: nil, domain: :ds },
-    { name: "NumPy", logo: "devicon devicon-numpy-plain", placeholder: nil, domain: :ds },
-    { name: "Scikit-learn", logo: "devicon devicon-scikitlearn-plain", placeholder: nil, domain: :ds },
-    { name: "PyTorch", logo: "devicon devicon-pytorch-plain", placeholder: nil, domain: :ds },
-    { name: "TensorFlow", logo: "devicon devicon-tensorflow-plain", placeholder: nil, domain: :ds },
-    { name: "Machine Learning", logo: nil, placeholder: "M", domain: :ds },
-    { name: "Jupyter", logo: "devicon devicon-jupyter-plain", placeholder: nil, domain: :ds },
-    { name: "Data Viz", logo: "devicon devicon-numpy-plain", placeholder: nil, domain: :ds },
-    { name: "SQL", logo: "devicon devicon-postgresql-plain", placeholder: nil, domain: :ds },
-    { name: "Ruby on Rails", logo: "devicon devicon-rails-plain", placeholder: nil, domain: :web },
-    { name: "PostgreSQL", logo: "devicon devicon-postgresql-plain", placeholder: nil, domain: :web },
-    { name: "SQLite", logo: "devicon devicon-sqlite-plain", placeholder: nil, domain: :web },
-    { name: "JavaScript", logo: "devicon devicon-javascript-plain", placeholder: nil, domain: :web },
-    { name: "Hotwire", logo: nil, placeholder: "H", domain: :web },
-    { name: "REST API", logo: nil, placeholder: "R", domain: :web },
-    { name: "GraphQL", logo: nil, placeholder: "G", domain: :web },
-    { name: "Docker", logo: "devicon devicon-docker-plain", placeholder: nil, domain: :web },
-    { name: "Git", logo: "devicon devicon-git-plain", placeholder: nil, domain: :web },
-    { name: "System Design", logo: nil, placeholder: "S", domain: :web },
-    { name: "TDD", logo: nil, placeholder: "T", domain: :web }
+  # Skill taxonomy for the "Skills & Technologies" ecosystem.
+  # Discipline -> ordered technologies, each with a short, neutral description.
+  # Project relationships are derived from each Project's tech_stack (see build_skills_map),
+  # so no relationship is ever invented.
+  SKILLS_MAP = [
+    {
+      id: "ios",
+      title: "iOS Development",
+      blurb: "Native apps engineered end-to-end — interface, on-device intelligence, sensors, and shipping.",
+      techs: [
+        { name: "Swift", desc: "The primary language for modern native iOS development." },
+        { name: "SwiftUI", desc: "Declarative UI framework used across all current projects." },
+        { name: "UIKit", desc: "Imperative UI toolkit for fine-grained control and legacy integration." },
+        { name: "Core ML", desc: "Apple's on-device machine learning framework." },
+        { name: "MapKit", desc: "Map rendering and routing for location-aware experiences." },
+        { name: "CoreLocation", desc: "Positioning and region monitoring for spatial features." },
+        { name: "CoreHaptics", desc: "Precise haptic feedback for eyes-free interaction." },
+        { name: "CoreData", desc: "On-device persistence for app state and caches." },
+        { name: "Swift Package Manager", desc: "Dependency and module management." },
+        { name: "TestFlight", desc: "Beta distribution and pre-release testing." },
+        { name: "App Store Connect", desc: "Release management, metadata, and analytics." },
+        { name: "Fastlane / CI-CD", desc: "Automated builds, signing, and release pipelines." }
+      ]
+    },
+    {
+      id: "ml",
+      title: "Machine Learning",
+      blurb: "Models trained and shipped — from research prototypes to on-device inference.",
+      techs: [
+        { name: "Python", desc: "Primary language for model development and tooling." },
+        { name: "PyTorch", desc: "Deep learning framework for research and training." },
+        { name: "scikit-learn", desc: "Classical ML: regression, clustering, and evaluation." },
+        { name: "Core ML", desc: "Deployment of models for private on-device inference." },
+        { name: "Computer Vision", desc: "Image and video understanding for real-time features." },
+        { name: "Machine Learning", desc: "End-to-end modeling: data, training, and serving." },
+        { name: "TensorFlow", desc: "Additional training and serving ecosystem." },
+        { name: "NumPy", desc: "Numerical computing foundation for ML workflows." },
+        { name: "Pandas", desc: "Structured data wrangling and feature preparation." },
+        { name: "Jupyter", desc: "Interactive notebooks for experimentation and analysis." }
+      ]
+    },
+    {
+      id: "ds",
+      title: "Data Science",
+      blurb: "Turning raw data into decisions — analysis, forecasting, and clear visualization.",
+      techs: [
+        { name: "Python", desc: "Primary language for analysis and pipelines." },
+        { name: "Pandas", desc: "Data manipulation and aggregation." },
+        { name: "NumPy", desc: "Vectorized numerical computation." },
+        { name: "SQL", desc: "Querying and modeling relational data." },
+        { name: "Data Visualization", desc: "Charts and dashboards that communicate findings." },
+        { name: "Jupyter", desc: "Reproducible analysis and reporting." },
+        { name: "Time Series", desc: "Forecasting and trend analysis over time." },
+        { name: "PostgreSQL", desc: "Production relational database and analytics store." },
+        { name: "Statistics", desc: "Inference, testing, and quantitative reasoning." },
+        { name: "Data Analysis", desc: "Exploration and insight from real datasets." }
+      ]
+    }
+  ].freeze
+
+  # Supporting / web technologies — shown smaller, never as a primary discipline.
+  SKILLS_EXTRA = [
+    { name: "Ruby on Rails", desc: "Full-stack web framework (this site)." },
+    { name: "JavaScript", desc: "Client-side interactivity and tooling." },
+    { name: "Hotwire", desc: "HTML-over-the-wire for progressive web apps." },
+    { name: "PostgreSQL", desc: "Relational database for web services." },
+    { name: "REST API", desc: "Service and integration design." },
+    { name: "Docker", desc: "Containerized development and deployment." },
+    { name: "Git", desc: "Version control and collaboration." }
   ].freeze
 
   def home
     @projects = Project.ordered
     @featured_projects = Project.featured.limit(3)
-    @skill_rows = build_skill_rows
     @experiences = Experience.ordered
     @educations = Education.ordered
     @publications = Publication.ordered
     @leaderships = LeadershipExperience.ordered
     @certifications = Certification.ordered
     @awards = Award.ordered
+
+    # Skills ecosystem (data-driven; project links derived from tech_stack).
+    @skills_map = build_skills_map
+    @skills_extra = SKILLS_EXTRA
 
     # Structured, DB-driven data for the public project modal (no hardcoded content).
     @projects_data = Project.ordered.map do |p|
@@ -73,30 +115,25 @@ class PagesController < ApplicationController
 
   private
 
+  # Build the skill map, enriching each technology with the projects that actually
+  # use it (matched by exact name against Project#tech_stack). Includes only real
+  # relationships — never fabricates a link.
+  def build_skills_map
+    used = Project.ordered.each_with_object({}) do |p, acc|
+      techs = p.tech_stack.is_a?(Array) ? p.tech_stack : (JSON.parse(p.tech_stack || "[]") rescue [])
+      techs.each { |t| (acc[t] ||= []) << { id: p.id, title: p.title } }
+    end
+    SKILLS_MAP.map do |disc|
+      techs = disc[:techs].map do |t|
+        t.merge(projects: (used[t[:name]] || []).map { |pr| { id: pr[:id], title: pr[:title] } })
+      end
+      disc.merge(techs: techs)
+    end
+  end
+
   # Public, absolute URL for an Active Storage attachment (served by the app,
   # no auth required) so the case-study modal can render uploaded media.
   def media_url(att)
     Rails.application.routes.url_helpers.rails_blob_url(att, host: request.base_url)
-  end
-
-  # Balanced interleave: round-robin the domains (ios -> ds -> web -> ...),
-  # shuffling the domain order each load so it varies, then chunk the single
-  # balanced sequence into 3 rows. Guarantees every row mixes all 3 domains.
-  def build_skill_rows
-    by_domain = SKILLS.group_by { |s| s[:domain] }.transform_values(&:shuffle)
-    domains = by_domain.keys.shuffle
-    interleaved = []
-    loop do
-      placed = false
-      domains.each do |d|
-        q = by_domain[d]
-        next if q.empty?
-        interleaved << q.shift
-        placed = true
-      end
-      break unless placed
-    end
-    # Split the balanced sequence into 3 contiguous rows (10/10/9).
-    interleaved.each_slice((interleaved.length / 3.0).ceil).to_a
   end
 end
