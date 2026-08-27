@@ -1303,3 +1303,69 @@ body.admin-shell {
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
 }
+
+
+/* ---------- Phase 5: Accessibility & Quality ---------- */
+
+/* Skip-to-content link — visible only on keyboard focus */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -120%);
+  z-index: 1000;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1.1rem;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.18s ease;
+}
+.skip-link:focus {
+  transform: translate(-50%, 0);
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Visible keyboard focus rings (don't rely on :focus alone; mouse users keep clean) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Public form / button focus already handled; ensure nav links get a ring too */
+.nav__link:focus-visible,
+.nav__social:focus-visible,
+.nav__cta:focus-visible,
+.btn:focus-visible,
+.footer__social-link:focus-visible,
+.footer__menu-link:focus-visible,
+.hero__cta a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Respect reduced-motion for the skip link transition */
+@media (prefers-reduced-motion: reduce) {
+  .skip-link { transition: none; }
+}
+
+/* ---------- Responsive guard: never allow horizontal overflow at 320px ---------- */
+html, body { max-width: 100%; overflow-x: hidden; }
+.container, .nav, .nav__pill, .hero, .footer__container {
+  max-width: 100%;
+}
+img, svg, video { max-width: 100%; height: auto; }
+
+@media (max-width: 360px) {
+  .hero__title { font-size: clamp(2rem, 14vw, 3rem); }
+  .nav__pill { gap: 0.25rem; }
+  .btn { padding: 0.7rem 1rem; font-size: 0.85rem; }
+}

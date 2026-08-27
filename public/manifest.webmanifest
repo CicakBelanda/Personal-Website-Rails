@@ -1,5 +1,6 @@
 {
-  "name": "PersonalWebsite",
+  "name": "Kevin Joseph Handoyo — Portfolio",
+  "short_name": "KJ Portfolio",
   "icons": [
     {
       "src": "/icon.png",
@@ -16,7 +17,7 @@
   "start_url": "/",
   "display": "standalone",
   "scope": "/",
-  "description": "PersonalWebsite.",
-  "theme_color": "red",
-  "background_color": "red"
+  "description": "Portfolio of Kevin Joseph Handoyo — iOS Developer, ML Engineer and Data Scientist.",
+  "theme_color": "#050505",
+  "background_color": "#050505"
 }

@@ -4,7 +4,9 @@
     <title><%= content_for(:title) || "Kevin Joseph Handoyo — iOS Developer · ML Engineer · Data Scientist" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#050505">
+    <link rel="manifest" href="/manifest.webmanifest">
     <meta name="description" content="Kevin J — iOS Developer, Data Scientist and Software Engineer. Portfolio of projects across mobile, machine learning and web.">
+    <%= render "shared/seo" %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -19,6 +21,7 @@
   </head>
 
   <body data-controller="nav-active reveal cursor">
+    <a href="#main" class="skip-link">Skip to content</a>
     <div class="cursor-ring" data-cursor-target="ring" aria-hidden="true"></div>
     <div class="cursor-dot" data-cursor-target="dot" aria-hidden="true"></div>
     <% flash.each do |type, message| %>

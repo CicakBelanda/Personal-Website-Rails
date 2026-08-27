@@ -1,0 +1,43 @@
+<%
+# SEO / social-share head partial.
+# Expects a controller to set: @page_title (optional), @page_description (optional).
+site_name = "Kevin Joseph Handoyo"
+page_title = @page_title || "Kevin Joseph Handoyo — iOS Developer · ML Engineer · Data Scientist"
+page_description = @page_description || "Kevin J — iOS Developer, ML Engineer and Data Scientist. Portfolio of projects across native mobile, machine learning and data science."
+canonical = request.original_url
+og_image = (root_url + "og-image.png").gsub(/\/$/, "/")
+%>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="<%= site_name %>">
+<meta property="og:title" content="<%= page_title %>">
+<meta property="og:description" content="<%= page_description %>">
+<meta property="og:url" content="<%= canonical %>">
+<meta property="og:image" content="<%= og_image %>">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kevin Joseph Handoyo — iOS Developer, ML Engineer and Data Scientist">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= page_title %>">
+<meta name="twitter:description" content="<%= page_description %>">
+<meta name="twitter:image" content="<%= og_image %>">
+<link rel="canonical" href="<%= canonical %>">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Kevin Joseph Handoyo",
+  "alternateName": "Kevin J",
+  "url": "<%= root_url %>",
+  "jobTitle": ["iOS Developer", "ML Engineer", "Data Scientist"],
+  "description": "<%= page_description %>",
+  "image": "<%= og_image %>",
+  "sameAs": [
+    "https://github.com/CicakBelanda",
+    "https://linkedin.com/in/kevinj",
+    "https://x.com/kevinj"
+  ],
+  "knowsAbout": ["Swift", "SwiftUI", "Machine Learning", "Data Science", "Ruby on Rails"]
+}
+</script>
