@@ -26,8 +26,9 @@ module Admin
     end
 
     def update
-      if @project.update(project_params.except(:cover_image_remove, :gallery_images_remove, :cover_image).compact)
-        @project.metrics = parse_metrics(params[:project][:metrics])
+      @project.assign_attributes(project_params.except(:cover_image_remove, :gallery_images_remove, :cover_image).compact)
+      @project.metrics = parse_metrics(params[:project][:metrics])
+      if @project.save
         handle_media_removal
         attach_media
         redirect_to admin_project_path(@project), notice: "Project was successfully updated.", status: :see_other
@@ -53,7 +54,7 @@ module Admin
         :role, :location, :client, :status, :problem, :solution, :tech_details,
         :project_date, :demo_url, :github_url, :cover_image, :featured, :position,
         :cover_image_remove, :gallery_images_remove,
-        tech_stack: [], key_features: []
+        :tech_stack, :key_features
       )
     end
 

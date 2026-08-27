@@ -17,10 +17,12 @@ skip = %w[id created_at updated_at]
       <% m = raw.is_a?(Array) ? raw : (raw.present? ? (JSON.parse(raw) rescue []) : []) %>
       <% display = m.map { |x| "#{x['value']}|#{x['label']}" }.join($/) %>
       <%= form.text_area col, value: display, rows: 3, class: "admin-input admin-input--area", placeholder: "value|label  (one metric per line)" %>
+      <p class="admin-hint">One metric per line as <code>value|label</code> — e.g. <code>95%|Model accuracy</code>. Leave blank for no metrics.</p>
     <% elsif array_fields.include?(col) %>
       <% val = record.send(c) %>
       <% display = val.is_a?(Array) ? val.join($/) : val.to_s %>
       <%= form.text_area col, value: display, rows: 4, class: "admin-input admin-input--area", placeholder: "One item per line" %>
+      <p class="admin-hint">One item per line. E.g.<br><code>Swift</code><br><code>SwiftUI</code><br><code>Core ML</code></p>
     <% elsif col.match?(/_(url|image)$/) || col == "doi_url" %>
       <%= form.text_field col, class: "admin-input", placeholder: "https://..." %>
     <% elsif col == "featured" || col == "current" %>
