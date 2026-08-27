@@ -1,0 +1,62 @@
+<section class="project-detail" id="main">
+  <div class="container container--narrow">
+    <a href="<%= root_path %>#projects" class="back-link">&larr; Back to projects</a>
+
+    <header class="project-detail__header">
+      <span class="project-card__category project-card__category--<%= @project.category %>"><%= @project.category_label.presence || Project.category_labels[@project.category] %></span>
+      <h1 class="project-detail__title"><%= @project.title %></h1>
+      <% if @project.project_date.present? %>
+        <p class="project-detail__date"><%= @project.project_date %></p>
+      <% end %>
+    </header>
+
+    <% if @project.cover_image.present? %>
+      <div class="project-detail__cover" style="background-image:url('<%= @project.cover_image %>')"></div>
+    <% end %>
+
+    <% tech_stack = @project.tech_stack.is_a?(Array) ? @project.tech_stack : JSON.parse(@project.tech_stack || "[]") rescue [] %>
+    <% if tech_stack.any? %>
+      <div class="project-detail__block">
+        <h2 class="project-detail__label">Tech Stack</h2>
+        <pre class="project-detail__code">[<%= tech_stack.map { |t| "\"#{t}\"" }.join(", ") %>]</pre>
+      </div>
+    <% end %>
+
+    <% if @project.description.present? %>
+      <div class="project-detail__block">
+        <h2 class="project-detail__label">Description</h2>
+        <div class="project-detail__box"><p><%= @project.description %></p></div>
+      </div>
+    <% end %>
+
+    <% if @project.problem.present? %>
+      <div class="project-detail__block">
+        <h2 class="project-detail__label">Problem</h2>
+        <div class="project-detail__box"><p><%= @project.problem %></p></div>
+      </div>
+    <% end %>
+
+    <% if @project.solution.present? %>
+      <div class="project-detail__block">
+        <h2 class="project-detail__label">Solution</h2>
+        <div class="project-detail__box"><p><%= @project.solution %></p></div>
+      </div>
+    <% end %>
+
+    <% if @project.tech_details.present? %>
+      <div class="project-detail__block">
+        <h2 class="project-detail__label">Tech Details</h2>
+        <div class="project-detail__box"><p><%= @project.tech_details %></p></div>
+      </div>
+    <% end %>
+
+    <div class="project-detail__links">
+      <% if @project.demo_url.present? %>
+        <a href="<%= @project.demo_url %>" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View site</a>
+      <% end %>
+      <% if @project.github_url.present? %>
+        <a href="<%= @project.github_url %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline">GitHub</a>
+      <% end %>
+    </div>
+  </div>
+</section>

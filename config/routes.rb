@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   end
   root "pages#home"
   
+  # Public project detail pages (featured cards link here)
+  resources :projects, only: [:show]
+  
   post "/contact", to: "contacts#create"
   
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
