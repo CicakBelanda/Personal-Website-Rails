@@ -7,7 +7,16 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  url: <%= ENV.fetch("DATABASE_URL") { "postgres://localhost/#{Rails.env}" } %>
+  # In production (Railway) DATABASE_URL is injected by the PostgreSQL plugin. Fail
+  # fast with a clear message if it is missing so we never silently fall back to
+  # localhost (which produces a confusing "Connection refused" error).
+  url: <%= if ENV["DATABASE_URL"].present?
+            ENV["DATABASE_URL"]
+          elsif Rails.env.production?
+            raise("DATABASE_URL is not set. Add the PostgreSQL plugin in Railway and link it to this service via Variables referencing Postgres.DATABASE_URL.")
+          else
+            "postgres://localhost/#{Rails.env}"
+          end %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   ssl_mode: <%= if ENV.fetch("RAILS_ENV", "development") == "production" then "require" else "prefer" end %>
   timeout: 5000
