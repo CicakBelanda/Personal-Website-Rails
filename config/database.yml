@@ -7,16 +7,12 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  # In production (Railway) DATABASE_URL is injected by the PostgreSQL plugin. Fail
-  # fast with a clear message if it is missing so we never silently fall back to
-  # localhost (which produces a confusing "Connection refused" error).
-  url: <%= if ENV["DATABASE_URL"].present?
-            ENV["DATABASE_URL"]
-          elsif Rails.env.production?
-            raise("DATABASE_URL is not set. Add the PostgreSQL plugin in Railway and link it to this service via Variables referencing Postgres.DATABASE_URL.")
-          else
-            "postgres://localhost/#{Rails.env}"
-          end %>
+  # DATABASE_URL is injected by the Railway PostgreSQL plugin at runtime. During the
+  # Docker build, assets:precompile runs without DATABASE_URL, so we fall back to a
+  # dummy localhost URL (no DB connection is made at build time). At runtime on
+  # Railway the real DATABASE_URL is used; if it is missing there, the connection
+  # error will surface honestly.
+  url: <%= ENV["DATABASE_URL"].presence || "postgres://localhost/#{Rails.env}" %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   ssl_mode: <%= if ENV.fetch("RAILS_ENV", "development") == "production" then "require" else "prefer" end %>
   timeout: 5000
