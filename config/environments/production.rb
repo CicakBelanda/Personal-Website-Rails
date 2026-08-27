@@ -3,6 +3,18 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # secret_key_base for production. Priority:
+  #   1. SECRET_KEY_BASE env (set this in Railway for a stable, private key)
+  #   2. Railway's stable RAILWAY_ENVIRONMENT_ID (auto-set, stable across restarts)
+  #   3. a freshly generated value (only if neither above is present; fine for
+  #      release/rake tasks, but prefer 1 or 2 for live requests / CSRF stability)
+  # config/master.key is gitignored and not in the deployed image, so we must not
+  # rely on encrypted credentials for the secret key base.
+  config.secret_key_base =
+    ENV["SECRET_KEY_BASE"].presence ||
+    ("railway-" + ENV["RAILWAY_ENVIRONMENT_ID"] if ENV["RAILWAY_ENVIRONMENT_ID"].present?) ||
+    SecureRandom.hex(64)
+
   # Code is not reloaded between requests.
   config.enable_reloading = false
 
