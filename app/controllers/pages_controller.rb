@@ -35,6 +35,12 @@ class PagesController < ApplicationController
     @projects = Project.ordered
     @featured_projects = Project.featured.limit(3)
     @skill_rows = build_skill_rows
+    @experiences = Experience.ordered
+    @educations = Education.ordered
+    @publications = Publication.ordered
+    @leaderships = LeadershipExperience.ordered
+    @certifications = Certification.ordered
+    @awards = Award.ordered
   end
 
   private

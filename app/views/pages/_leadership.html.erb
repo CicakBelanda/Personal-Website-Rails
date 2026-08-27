@@ -1,0 +1,22 @@
+<section id="leadership" class="section leadership reveal">
+  <div class="container">
+    <div class="section__head">
+      <span class="eyebrow">// Leadership</span>
+      <h2 class="section__title">Leadership & Organizations</h2>
+    </div>
+
+    <div class="leadership__grid">
+      <% @leaderships.each do |lead| %>
+        <div class="leadership-card">
+          <h3 class="leadership-card__role"><%= lead.role %></h3>
+          <p class="leadership-card__org"><%= lead.organization %></p>
+          <% if lead.highlights.any? %>
+            <ul class="leadership-card__highlights">
+              <% lead.highlights.each do |h| %><li><%= h %></li><% end %>
+            </ul>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,36 @@
+<section id="research" class="section research reveal">
+  <div class="container">
+    <div class="section__head">
+      <span class="eyebrow">// Research</span>
+      <h2 class="section__title">Publications & Research</h2>
+    </div>
+
+    <div class="research__list">
+      <% @publications.each do |pub| %>
+        <article class="research-card" data-controller="reveal-expand">
+          <button type="button" class="research-card__head" data-action="click->reveal-expand#toggle" aria-expanded="false">
+            <div class="research-card__lead">
+              <h3 class="research-card__title"><%= pub.title %></h3>
+              <p class="research-card__meta">
+                <span class="research-card__publisher"><%= pub.publisher %></span>
+                <% if pub.publication_date.present? %><span class="research-card__date"><%= pub.publication_date %></span><% end %>
+              </p>
+            </div>
+            <span class="research-card__chevron" aria-hidden="true">+</span>
+          </button>
+          <% if pub.description.present? || pub.methods.present? || pub.doi_url.present? %>
+            <div class="research-card__body" hidden>
+              <% if pub.description.present? %><p class="research-card__desc"><%= pub.description %></p><% end %>
+              <% if pub.methods.present? %>
+                <p class="research-card__methods"><span>Methods:</span> <%= pub.methods %></p>
+              <% end %>
+              <% if pub.doi_url.present? %>
+                <a href="<%= pub.doi_url %>" target="_blank" rel="noopener noreferrer" class="research-card__link">View publication →</a>
+              <% end %>
+            </div>
+          <% end %>
+        </article>
+      <% end %>
+    </div>
+  </div>
+</section>

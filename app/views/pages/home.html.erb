@@ -1,3 +1,5 @@
+<%= render "shared/navbar" %>
+
 <section class="hero">
   <div class="container">
     <div class="hero__avatar">KJ</div>
@@ -18,11 +20,13 @@
   </div>
 </section>
 
-<%= render "shared/navbar" %>
 <%= render "pages/about" %>
 <%= render "pages/skills" %>
 <%= render "pages/projects" %>
-<%= content_tag :section, "", id: "experience", class: "section" %>
-<%= content_tag :section, "", id: "research", class: "section" %>
+<%= render "pages/experience" %>
+<%= render "pages/education" %>
+<%= render "pages/research" %>
+<%= render "pages/leadership" %>
+<%= render "pages/certifications" %>
 <%= render "pages/contact" %>
 <%= render "shared/footer" %>

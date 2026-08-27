@@ -1,0 +1,33 @@
+<section id="certs" class="section certs reveal">
+  <div class="container">
+    <div class="section__head">
+      <span class="eyebrow">// Credentials</span>
+      <h2 class="section__title">Certifications & Awards</h2>
+    </div>
+
+    <div class="creds">
+      <div class="creds__col">
+        <h3 class="creds__title">Certifications</h3>
+        <ul class="creds__list">
+          <% @certifications.each do |cert| %>
+            <li class="cred-item">
+              <span class="cred-item__name"><%= cert.name %></span>
+              <span class="cred-item__issuer"><%= cert.issuer %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="creds__col">
+        <h3 class="creds__title">Awards</h3>
+        <ul class="creds__list">
+          <% @awards.each do |award| %>
+            <li class="cred-item">
+              <span class="cred-item__name"><%= award.name %></span>
+              <span class="cred-item__issuer"><%= award.issuer %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

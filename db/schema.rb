@@ -10,7 +10,58 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_27_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_27_000002) do
+  create_table "awards", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "issuer"
+    t.string "name", null: false
+    t.integer "position", default: 0
+    t.datetime "updated_at", null: false
+    t.string "year"
+  end
+
+  create_table "certifications", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "issuer"
+    t.string "name", null: false
+    t.integer "position", default: 0
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "educations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "degree", null: false
+    t.string "end_date"
+    t.string "expected_graduation"
+    t.string "gpa"
+    t.string "location"
+    t.integer "position", default: 0
+    t.string "school", null: false
+    t.string "start_date"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "experiences", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "current", default: false
+    t.string "end_date"
+    t.text "highlights"
+    t.string "organization", null: false
+    t.integer "position", default: 0
+    t.string "start_date"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "leadership_experiences", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "highlights"
+    t.string "organization"
+    t.integer "position", default: 0
+    t.string "role", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string "category", null: false
     t.string "category_label"
@@ -32,5 +83,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_000001) do
     t.index ["category"], name: "index_projects_on_category"
     t.index ["featured"], name: "index_projects_on_featured"
     t.index ["position"], name: "index_projects_on_position"
+  end
+
+  create_table "publications", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "doi_url"
+    t.text "methods"
+    t.integer "position", default: 0
+    t.string "publication_date"
+    t.string "publisher"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
   end
 end

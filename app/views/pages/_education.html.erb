@@ -1,0 +1,27 @@
+<section id="education" class="section education reveal">
+  <div class="container">
+    <div class="section__head">
+      <span class="eyebrow">// Education</span>
+      <h2 class="section__title">Education</h2>
+    </div>
+
+    <% @educations.each do |edu| %>
+      <div class="edu-card">
+        <div class="edu-card__main">
+          <h3 class="edu-card__school"><%= edu.school %></h3>
+          <p class="edu-card__meta"><%= edu.degree %><% if edu.location.present? %> · <%= edu.location %><% end %></p>
+          <p class="edu-card__date">
+            <%= edu.start_date %><% if edu.end_date.present? %> – <%= edu.end_date %><% end %>
+            <% if edu.expected_graduation.present? %> · Expected graduation <%= edu.expected_graduation %><% end %>
+          </p>
+        </div>
+        <% if edu.gpa.present? %>
+          <div class="edu-card__gpa">
+            <span class="edu-card__gpa-num"><%= edu.gpa %></span>
+            <span class="edu-card__gpa-label">GPA</span>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</section>
