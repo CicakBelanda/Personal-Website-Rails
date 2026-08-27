@@ -1,0 +1,46 @@
+# Render deployment config for PersonalWebsite (Rails 8.1 + Postgres + Propshaft/Importmap)
+# Deploy: Render dashboard -> New -> Blueprints -> connect this GitHub repo (render.yaml auto-detected).
+# Railway's railway.toml is ignored by Render.
+
+services:
+  - type: web
+    name: personal-website
+    runtime: ruby
+    plan: starter # bump to standard (paid) if you attach the storage disk below
+    buildCommand: bundle install
+    # Puma binds to $PORT via config/puma.rb (port ENV.fetch("PORT", 3000)).
+    startCommand: bin/rails server
+    # Runs before the service goes live on every deploy: migrate + (first-time) seed.
+    preDeployCommand: bin/rails db:migrate db:seed
+    healthCheckPath: /up
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "1"
+      - key: RAILS_STORAGE_DIR
+        value: /data/storage
+      - key: SECRET_KEY_BASE
+        generateValue: true
+      - key: ADMIN_PASSWORD # set this in the Render dashboard (or it falls back to dev default)
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: personal-website-db
+          property: connectionString
+    # Persistent disk for Active Storage uploads (survives restarts).
+    # NOTE: attaching a disk requires a paid instance plan (starter is free but diskless).
+    # If you stay on the free starter plan, remove this `disks` block — uploads will
+    # then persist only until the instance restarts.
+    disks:
+      - name: storage
+        mountPath: /data
+        sizeGB: 1
+    # Web process scales from $PORT; Render sets PORT automatically.
+
+databases:
+  - name: personal-website-db
+    databaseName: personal_website
+    user: personal_website
+    plan: free # or standard for production
+    postgresMajorVersion: "16"
