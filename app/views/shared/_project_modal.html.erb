@@ -1,0 +1,80 @@
+<div class="project-modal" data-project-modal-target="root" hidden>
+  <div class="project-modal__backdrop" data-action="click->project-modal#backdropClose" data-project-modal-target="backdrop"></div>
+
+  <div class="project-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="project-modal-title" tabindex="-1" data-project-modal-target="dialog">
+    <header class="project-modal__header">
+      <div class="project-modal__header-meta">
+        <span class="project-modal__category" data-project-modal-target="category"></span>
+        <span class="project-modal__status" data-project-modal-target="status"></span>
+      </div>
+      <button type="button" class="project-modal__close" aria-label="Close project details" data-action="click->project-modal#close" data-project-modal-target="close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <div class="project-modal__scroll" data-project-modal-target="scroll">
+      <!-- HERO -->
+      <div class="project-modal__hero">
+        <div class="project-modal__cover" data-project-modal-target="cover"></div>
+        <div class="project-modal__hero-text">
+          <h2 class="project-modal__title" id="project-modal-title" data-project-modal-target="title"></h2>
+          <p class="project-modal__short" data-project-modal-target="short"></p>
+          <ul class="project-modal__meta" data-project-modal-target="meta"></ul>
+        </div>
+      </div>
+
+      <!-- OVERVIEW -->
+      <section class="project-modal__section">
+        <h3 class="project-modal__label">Overview</h3>
+        <p class="project-modal__body" data-project-modal-target="overview"></p>
+      </section>
+
+      <!-- TECH STACK -->
+      <section class="project-modal__section" data-project-modal-target="techSection">
+        <h3 class="project-modal__label">Tech Stack</h3>
+        <div class="project-modal__chips" data-project-modal-target="tech"></div>
+      </section>
+
+      <!-- PROBLEM -->
+      <section class="project-modal__section" data-project-modal-target="problemSection">
+        <h3 class="project-modal__label">Problem</h3>
+        <p class="project-modal__body" data-project-modal-target="problem"></p>
+      </section>
+
+      <!-- SOLUTION -->
+      <section class="project-modal__section" data-project-modal-target="solutionSection">
+        <h3 class="project-modal__label">Solution</h3>
+        <p class="project-modal__body" data-project-modal-target="solution"></p>
+      </section>
+
+      <!-- TECHNICAL IMPLEMENTATION -->
+      <section class="project-modal__section" data-project-modal-target="techDetailsSection">
+        <h3 class="project-modal__label">Technical Implementation</h3>
+        <p class="project-modal__body" data-project-modal-target="techDetails"></p>
+      </section>
+
+      <!-- KEY FEATURES -->
+      <section class="project-modal__section" data-project-modal-target="featuresSection">
+        <h3 class="project-modal__label">Key Features</h3>
+        <ul class="project-modal__features" data-project-modal-target="features"></ul>
+      </section>
+
+      <!-- RESULTS / METRICS -->
+      <section class="project-modal__section project-modal__metrics" data-project-modal-target="metricsSection">
+        <h3 class="project-modal__label">Results</h3>
+        <div class="project-modal__metrics-grid" data-project-modal-target="metrics"></div>
+      </section>
+
+      <!-- GALLERY -->
+      <section class="project-modal__section" data-project-modal-target="gallerySection">
+        <h3 class="project-modal__label">Gallery</h3>
+        <div class="project-modal__gallery" data-project-modal-target="gallery"></div>
+      </section>
+
+      <!-- LINKS -->
+      <div class="project-modal__actions" data-project-modal-target="actions"></div>
+    </div>
+  </div>
+</div>

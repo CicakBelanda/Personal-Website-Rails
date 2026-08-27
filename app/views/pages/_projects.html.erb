@@ -15,17 +15,14 @@
 
     <div class="projects__grid">
       <% @projects.each do |project| %>
-        <article class="project-card" data-project-filter-target="projectCard" data-project-category="<%= project.category %>">
+        <button type="button" class="project-card" data-project-filter-target="projectCard" data-project-category="<%= project.category %>" data-action="click->project-modal#open" data-project-id="<%= project.id %>" aria-haspopup="dialog" aria-label="Open <%= project.title %> project details">
           <div class="project-card__image">
             <%= project.title.split(' ').map(&:capitalize).join(' ') %>
           </div>
           <div class="project-card__content">
             <span class="project-card__category project-card__category--<%= project.category %>"><%= project.category_label.presence || Project.category_labels[project.category] %></span>
-            <h3 class="project-card__title">
-              <% primary_url = project.demo_url.presence || project.github_url.presence %>
-              <%= link_to project.title, project_path(project), class: "project-card__title-link stretched-link" %>
-            </h3>
-            <p class="project-card__description"><%= project.description %></p>
+            <h3 class="project-card__title"><%= project.title %></h3>
+            <p class="project-card__description"><%= project.short_description.presence || project.description %></p>
 
             <% tech_stack = project.tech_stack.is_a?(Array) ? project.tech_stack : JSON.parse(project.tech_stack || '[]') %>
             <div class="project-card__tech">
@@ -36,14 +33,14 @@
 
             <div class="project-card__links">
               <% if project.github_url.present? %>
-                <a href="<%= project.github_url %>" target="_blank" rel="noopener noreferrer" class="project-card__link btn btn-outline btn-sm">GitHub</a>
+                <span class="project-card__link btn btn-outline btn-sm">GitHub</span>
               <% end %>
               <% if project.demo_url.present? %>
-                <a href="<%= project.demo_url %>" target="_blank" rel="noopener noreferrer" class="project-card__link btn btn-outline btn-sm"><%= project.demo_url.include?('itunes.apple.com') ? 'App Store' : 'Live Demo' %></a>
+                <span class="project-card__link btn btn-outline btn-sm"><%= project.demo_url.include?('itunes.apple.com') ? 'App Store' : 'Live Demo' %></span>
               <% end %>
             </div>
           </div>
-        </article>
+        </button>
       <% end %>
     </div>
   </div>

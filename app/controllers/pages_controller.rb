@@ -41,6 +41,34 @@ class PagesController < ApplicationController
     @leaderships = LeadershipExperience.ordered
     @certifications = Certification.ordered
     @awards = Award.ordered
+
+    # Structured, DB-driven data for the public project modal (no hardcoded content).
+    @projects_data = Project.ordered.map do |p|
+      tech = p.tech_stack.is_a?(Array) ? p.tech_stack : (JSON.parse(p.tech_stack || "[]") rescue [])
+      {
+        id: p.id,
+        title: p.title,
+        category: p.category,
+        categoryLabel: p.category_label.presence || Project.category_labels[p.category],
+        shortDescription: p.short_description.presence || p.description,
+        description: p.description,
+        date: p.project_date,
+        location: p.location,
+        role: p.role,
+        client: p.client,
+        status: p.status,
+        techStack: tech,
+        problem: p.problem,
+        solution: p.solution,
+        techDetails: p.tech_details,
+        keyFeatures: p.key_features,
+        metrics: p.metrics,
+        gallery: p.gallery_images,
+        coverImage: p.cover_image,
+        githubUrl: p.github_url,
+        demoUrl: p.demo_url
+      }
+    end
   end
 
   private

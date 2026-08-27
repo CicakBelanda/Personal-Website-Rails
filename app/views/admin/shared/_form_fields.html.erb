@@ -3,7 +3,8 @@
 # locals: form (FormBuilder), columns (Array<Symbol>), record (ActiveRecord)
 record = local_assigns[:record]
 cols = local_assigns[:columns] || []
-array_fields = %w[highlights tech_stack]
+array_fields = %w[highlights tech_stack key_features gallery_images]
+metrics_field = "metrics"
 skip = %w[id created_at updated_at]
 %>
 <% cols.reject { |c| skip.include?(c.to_s) }.each do |c| %>
@@ -11,7 +12,12 @@ skip = %w[id created_at updated_at]
   <div class="admin-field">
     <%= form.label col, col.titleize, class: "admin-field__label" %>
 
-    <% if array_fields.include?(col) %>
+    <% if col == metrics_field %>
+      <% raw = record.send(col) %>
+      <% m = raw.is_a?(Array) ? raw : (raw.present? ? (JSON.parse(raw) rescue []) : []) %>
+      <% display = m.map { |x| "#{x['value']}|#{x['label']}" }.join($/) %>
+      <%= form.text_area col, value: display, rows: 3, class: "admin-input admin-input--area", placeholder: "value|label  (one metric per line)" %>
+    <% elsif array_fields.include?(col) %>
       <% val = record.send(c) %>
       <% display = val.is_a?(Array) ? val.join($/) : val.to_s %>
       <%= form.text_area col, value: display, rows: 4, class: "admin-input admin-input--area", placeholder: "One item per line" %>

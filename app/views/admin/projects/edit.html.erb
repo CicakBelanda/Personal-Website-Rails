@@ -1,6 +1,35 @@
 <h1 class="admin-title">Edit Project</h1>
 <%= form_with model: @project, url: admin_project_path(@project.id), method: :patch, local: true, class: "admin-form" do |form| %>
-  <%= render "admin/shared/form_fields", form: form, record: @project, columns: ["title", "category", "category_label", "role", "position", "featured", "tech_stack", "description", "problem", "solution", "tech_details", "project_date", "demo_url", "github_url", "cover_image"] %>
+  <fieldset class="admin-group">
+    <legend class="admin-group__legend">Basic Information</legend>
+    <%= render "admin/shared/form_fields", form: form, record: @project, columns: ["title", "short_description", "description", "category", "category_label", "role", "location", "client", "status", "project_date"] %>
+  </fieldset>
+
+  <fieldset class="admin-group">
+    <legend class="admin-group__legend">Technical</legend>
+    <%= render "admin/shared/form_fields", form: form, record: @project, columns: ["tech_stack", "tech_details", "key_features"] %>
+  </fieldset>
+
+  <fieldset class="admin-group">
+    <legend class="admin-group__legend">Case Study</legend>
+    <%= render "admin/shared/form_fields", form: form, record: @project, columns: ["problem", "solution", "metrics"] %>
+  </fieldset>
+
+  <fieldset class="admin-group">
+    <legend class="admin-group__legend">Media</legend>
+    <%= render "admin/shared/form_fields", form: form, record: @project, columns: ["cover_image", "gallery_images"] %>
+  </fieldset>
+
+  <fieldset class="admin-group">
+    <legend class="admin-group__legend">Links</legend>
+    <%= render "admin/shared/form_fields", form: form, record: @project, columns: ["github_url", "demo_url"] %>
+  </fieldset>
+
+  <fieldset class="admin-group">
+    <legend class="admin-group__legend">Publishing</legend>
+    <%= render "admin/shared/form_fields", form: form, record: @project, columns: ["featured", "position"] %>
+  </fieldset>
+
   <div class="admin-form__actions">
     <%= form.submit "Save", class: "admin-btn admin-btn--primary" %>
     <%= link_to "Cancel", admin_projects_path, class: "admin-link" %>

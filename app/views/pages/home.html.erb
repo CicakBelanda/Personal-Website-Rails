@@ -22,7 +22,10 @@
 
 <%= render "pages/about" %>
 <%= render "pages/skills" %>
-<%= render "pages/projects" %>
+<div data-controller="project-modal" data-project-modal-projects-value="<%= @projects_data.to_json %>">
+  <%= render "pages/projects" %>
+  <%= render "shared/project_modal", projects: @projects_data %>
+</div>
 <%= render "pages/experience" %>
 <%= render "pages/education" %>
 <%= render "pages/research" %>
