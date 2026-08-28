@@ -74,9 +74,146 @@ projects = [
   }
 ]
 
+# ----------------------------------------------------------------------------
+# Real portfolio projects added 2026-08 (appended; 4 defaults above preserved).
+# All non-featured, ordered by position 5..11.
+# ----------------------------------------------------------------------------
 projects.each { |p| Project.create!(p) }
 
 puts "✅ Seeded #{Project.count} projects."
+
+# ----------------------------------------------------------------------------
+# Real portfolio projects added 2026-08 (appended; runs every seed, idempotent by
+# title so it does not wipe the 4 defaults or duplicate on repeat runs). All
+# non-featured, ordered by position.
+# ----------------------------------------------------------------------------
+APPENDED_PROJECTS = [
+  {
+    title: "Pacman Reimagined",
+    category: "software_dev",
+    category_label: "Software Development",
+    short_description: "A Java-based arcade game project that combines object-oriented programming with AI-driven gameplay mechanics.",
+    description: "Pacman Reimagined is a remake of the classic arcade game developed using Java and LibGDX. The project applies object-oriented programming principles to structure game entities, gameplay mechanics, and interactions while integrating persistent data storage for player information and high scores.",
+    role: "Game Developer",
+    problem: "The project required recreating a familiar arcade gameplay experience while maintaining a structured and extensible software architecture.",
+    solution: "Developed a Pacman-inspired game using object-oriented programming principles and LibGDX. Gameplay components were organized into reusable entities and systems, while MySQL provided persistent storage for player records and high scores.",
+    tech_details: "Implemented the game using Java and LibGDX with object-oriented architecture for game entities and gameplay logic. MySQL was integrated to store player names and high-score information, while Gradle was used for dependency management and project builds.",
+    tech_stack: ["Java", "LibGDX", "MySQL", "Gradle"],
+    github_url: "https://github.com/CicakBelanda/Pacman-Reimaginated-LibGDX",
+    demo_url: "",
+    project_date: "2024",
+    featured: false,
+    position: 5
+  },
+  {
+    title: "DiddySec",
+    category: "software_dev",
+    category_label: "Machine Learning · Cybersecurity · Software Development",
+    short_description: "A real-time network monitoring system that analyzes network traffic to detect potential DDoS attacks using machine learning.",
+    description: "DiddySec is a network security monitoring tool designed to detect suspicious network traffic and potential DDoS attacks. The system combines packet capture, traffic analysis, and machine learning to identify abnormal network behavior and present monitoring results through a web interface.",
+    role: "Machine Learning & Front-End Developer",
+    problem: "Traditional network monitoring can make it difficult to identify abnormal traffic patterns quickly, particularly when large volumes of network traffic need to be analyzed in real time.",
+    solution: "Built a monitoring pipeline that captures network packets, extracts traffic characteristics, and applies machine learning-based anomaly detection. The resulting information is presented through a web-based monitoring dashboard.",
+    tech_details: "Implemented a network traffic monitoring pipeline using TShark for packet capture and preprocessing. Machine learning models, including XGBoost, were integrated into the detection workflow, with Flask providing backend services and SvelteKit supporting the monitoring interface.",
+    tech_stack: ["Python", "scikit-learn", "XGBoost", "TShark", "Flask", "SvelteKit"],
+    github_url: "https://github.com/CicakBelanda/DiddySec-AI-Based-DDoS-Detector",
+    demo_url: "",
+    project_date: "2025",
+    featured: false,
+    position: 6
+  },
+  {
+    title: "Suntik.In",
+    category: "data_science",
+    category_label: "Cloud Computing",
+    short_description: "A cloud-based immunization management platform designed to manage vaccination records and scheduling using AWS services.",
+    description: "Suntik.In is a cloud-based immunization management system designed to improve the management of vaccination records and schedules. The system leverages cloud infrastructure and database technologies to provide centralized access to immunization information while supporting scalable data management.",
+    role: "Data Scientist",
+    problem: "Immunization records and schedules can become difficult to manage when information is distributed across different systems and requires reliable access at scale.",
+    solution: "Designed a centralized cloud-based immunization management system using AWS infrastructure to support vaccination records, scheduling, and data access.",
+    tech_details: "Designed a cloud-based architecture for managing immunization records and scheduling. The system focuses on centralized data management, scalable infrastructure, secure access, and supporting analytics for healthcare-related information.",
+    tech_stack: ["Amazon Web Services", "Cloud Computing"],
+    github_url: "https://github.com/CicakBelanda/Suntik.In-Cloud-Based-Immunization-Management-System-AWS",
+    demo_url: "",
+    project_date: "2025",
+    featured: false,
+    position: 7
+  },
+  {
+    title: "Human Development Index (HDI) in Indonesia 2024",
+    category: "data_science",
+    category_label: "Data Science",
+    short_description: "A data analysis and visualization project exploring regional disparities and human development trends across Indonesia.",
+    description: "This project examines Indonesia's Human Development Index using regional socioeconomic data. The analysis combines data collection, preprocessing, exploratory analysis, and visualization to investigate differences in education, income, and health indicators across Indonesian provinces.",
+    role: "Data Analyst",
+    problem: "Indonesia's human development outcomes vary across regions, making it difficult to understand disparities using a single national-level indicator.",
+    solution: "Analyzed provincial-level HDI data and related socioeconomic indicators to identify regional patterns in education, health, and income. The results were transformed into visual insights to make regional differences easier to interpret.",
+    tech_details: "Collected and consolidated data from multiple online sources, performed data cleaning and preprocessing, and analyzed regional HDI indicators. Findings were presented through an analytical poster using R and R Markdown.",
+    tech_stack: ["R", "R Markdown", "Plotly"],
+    github_url: "https://github.com/CicakBelanda/Human-Development-Index-Indonesia-2024",
+    demo_url: "",
+    project_date: "2025",
+    featured: false,
+    position: 8
+  },
+  {
+    title: "Performance Evaluation of Bank's Marketing Campaign",
+    category: "data_science",
+    category_label: "Data Science",
+    short_description: "A data mining and visualization project analyzing customer responses to evaluate the effectiveness of a bank's marketing campaign.",
+    description: "This project analyzes customer and campaign data to identify factors associated with marketing outcomes. Data mining techniques were combined with statistical analysis and interactive visualization to uncover customer response patterns and generate actionable insights for future campaigns.",
+    role: "Data Analyst",
+    problem: "The bank needed to understand which customer characteristics and previous interactions were associated with successful marketing campaign responses.",
+    solution: "Analyzed campaign data using data mining techniques and interactive visualizations to identify customer behavior patterns. The analysis focused on factors related to subscription outcomes and previous customer interactions.",
+    tech_details: "Performed data preprocessing, exploratory analysis, customer segmentation and visualization using R. Interactive Plotly visualizations were used to examine subscription behavior and compare campaign outcomes across customer characteristics.",
+    tech_stack: ["R", "R Markdown", "Plotly"],
+    github_url: "",
+    demo_url: "",
+    project_date: "2025",
+    featured: false,
+    position: 9
+  },
+  {
+    title: "NeuroLens",
+    category: "software_dev",
+    category_label: "Machine Learning",
+    short_description: "A machine learning application that predicts personality types from behavioral traits using Support Vector Machine classification.",
+    description: "NeuroLens is a Python and Streamlit-based personality assessment application that uses behavioral trait data to predict personality types. The system applies a Support Vector Machine (SVM) classifier and provides the prediction through an interactive web interface.",
+    role: "Machine Learning Developer",
+    problem: "Personality assessment can require manual interpretation of behavioral characteristics, making the process time-consuming and difficult to scale.",
+    solution: "Developed a machine learning classification system that maps behavioral traits to personality predictions using an SVM model. The trained model was integrated into a Streamlit application to provide an accessible interface for real-time assessment.",
+    tech_details: "Developed a classification pipeline using behavioral trait data, including data preprocessing, model training, evaluation, and integration into a Streamlit interface for interactive personality prediction.",
+    tech_stack: ["Python", "scikit-learn", "SVM", "Streamlit", "Pandas"],
+    github_url: "https://github.com/CicakBelanda/NeuroLens-Behavioral-Trait-Based-Personality-Detection",
+    demo_url: "",
+    project_date: "2025",
+    featured: false,
+    position: 10
+  },
+  {
+    title: "SUMA AI",
+    category: "software_dev",
+    category_label: "Machine Learning · NLP",
+    short_description: "An end-to-end AI summarization system that transforms long-form news articles and video content into concise, structured summaries.",
+    description: "SUMA AI is an AI-powered content summarization system designed to process both text-based news articles and video content. The system integrates OpenAI Whisper for automatic speech-to-text transcription and a fine-tuned BART transformer model for abstractive summarization. The complete NLP pipeline covers content preprocessing, transcription, model inference, and structured summary generation.",
+    role: "Machine Learning & Back-End Developer",
+    problem: "Long-form news articles and video content require significant time to consume and process. Video content also requires an additional transcription step before it can be analyzed or summarized automatically.",
+    solution: "Developed an end-to-end AI summarization pipeline capable of handling both text and video inputs. OpenAI Whisper was used for automatic speech-to-text transcription, while a fine-tuned BART transformer generated concise, context-aware abstractive summaries. The components were integrated into a unified backend pipeline for automated content processing.",
+    tech_details: "Built an end-to-end NLP pipeline capable of processing multiple content formats. OpenAI Whisper was integrated to transcribe video audio into text, while a fine-tuned BART transformer model generated abstractive summaries from long-form content. The backend pipeline handles preprocessing, transcription, model inference, and structured summary generation.",
+    tech_stack: ["Python", "PyTorch", "BART", "Transformers", "OpenAI Whisper"],
+    github_url: "https://github.com/CicakBelanda/SUMA-AI-Deep-Learning-Final-Project",
+    demo_url: "",
+    project_date: "2025",
+    featured: false,
+    position: 11
+  }
+]
+
+APPENDED_PROJECTS.each do |attrs|
+  next if Project.exists?(title: attrs[:title])   # idempotent: skip if already present
+  Project.create!(attrs)
+end
+puts "✅ Ensured #{APPENDED_PROJECTS.size} appended projects present (idempotent)."
 
 # ----------------------------------------------------------------------------
 # Experience (PRD §19)
