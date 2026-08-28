@@ -92,11 +92,16 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
 
-  # Allow Railway's and Render's deployment domains and never block the health check
-  # endpoint. (Both proxies from their own domains; without this, Rails' host
-  # authorization rejects /up and the deploy healthcheck fails.)
+  # Allow Railway's, Render's, and the custom domain's hosts; never block /up.
+  # (Each platform proxies from its own domains; without this, Rails' host
+  # authorization rejects /up and the deploy healthcheck fails, and the custom
+  # domain (www.kevin-jo.com) is blocked with 421 once DNS/TLS are live.)
   if ENV["RAILS_ENV"] == "production"
-    config.hosts = [ ".railway.app", /.*\.railway\.app/, ".onrender.com", /.*\.onrender\.com/ ]
+    config.hosts = [
+      ".railway.app", /.*\.railway\.app/,
+      ".onrender.com", /.*\.onrender\.com/,
+      "kevin-jo.com", "www.kevin-jo.com"
+    ]
   end
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
